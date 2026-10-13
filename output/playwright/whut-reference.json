@@ -1,0 +1,114 @@
+{
+  "role": "current source website observation; not native atlas acceptance",
+  "source_url": "https://gis.whut.edu.cn/index.shtml",
+  "captured_at": "2026-10-07T02:30:26.229840+00:00",
+  "capture_method": "Codex in-app browser through cua_repl; actual navigation/click/search followed by AX and screenshot inspection; raw screenshot bytes saved without image modification",
+  "captures": [
+    {
+      "step": 1,
+      "path": "output/playwright/whut-reference-overview.png",
+      "criterion": "网站首页总览",
+      "observation": "地图占主区域；顶部校区和搜索、左侧服务分类、底部指引入口同时可见。",
+      "health": "截图确认；不表示所有入口已测试",
+      "bytes": 266028,
+      "sha256": "8df2579f835371599c63b8a94e41d8c5839ae86d897af4c2dfeb18f6aef70c9a",
+      "actual_format": "JPEG",
+      "dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "step": 2,
+      "path": "output/playwright/whut-reference-zoom.png",
+      "criterion": "地图放大",
+      "observation": "真实点击放大控件后比例尺从100m变50m；路面、植床及建筑细节继续可见。DOM显示256×256地图图块及lv3资源路径。",
+      "health": "缩放状态确认；未测所有层级",
+      "bytes": 253104,
+      "sha256": "72bf774ab42d7b37cae71df3a5d73842ddfbd0aad14c2007208eef25616f8bb4",
+      "actual_format": "JPEG",
+      "dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "step": 3,
+      "path": "output/playwright/whut-reference-category.png",
+      "criterion": "餐饮分类",
+      "observation": "餐饮列表和地图标记同时出现，面板含校区分组。",
+      "health": "餐饮分类联动确认；未穷举类别",
+      "bytes": 250087,
+      "sha256": "1ddfa1da42b31249d2a129ec4dbef5264c79724df340187da3bf70b24920e74f",
+      "actual_format": "JPEG",
+      "dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "step": 4,
+      "path": "output/playwright/whut-reference-detail.png",
+      "criterion": "列表定位与详情",
+      "observation": "选择智苑食堂后地图重定位并打开对应标题弹窗，显示线路指引入口。",
+      "health": "标题和定位确认；弹窗正文、路线计算未完整验证",
+      "bytes": 245319,
+      "sha256": "d8f789b2a6132754edcbb5478e174e15dc168eb98d0ed257c595720f3fe35eb8",
+      "actual_format": "JPEG",
+      "dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "step": 5,
+      "path": "output/playwright/whut-reference-campus.png",
+      "criterion": "校区切换",
+      "observation": "点击马房山校区后顶部选中态和地图内容切换，餐饮点随地图变化。",
+      "health": "该次校区切换确认；左侧列表仍保留原分组，需分别核对列表筛选",
+      "bytes": 225563,
+      "sha256": "9d0b8a284c86c40f1a628f890d7e8eccf24f6ec84363822349632271a6d7f4dd",
+      "actual_format": "JPEG",
+      "dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "step": 6,
+      "path": "output/playwright/whut-reference-search.png",
+      "criterion": "建筑搜索",
+      "observation": "输入图书馆并回车后显示跨校区查询结果、别名和地图标记。",
+      "health": "该关键词查询确认；空结果等状态未测试",
+      "bytes": 229884,
+      "sha256": "c7d65ddb82d4f300bfbe261664761339c21cf3db41a795e17995a64bc673117d",
+      "actual_format": "JPEG",
+      "dimensions": [
+        1280,
+        720
+      ]
+    }
+  ],
+  "limits": {
+    "count": 6,
+    "capture_bytes": 12582912,
+    "output_directory_bytes": 201326592,
+    "source_amplification": 256,
+    "source_basis": [
+      "src/CampusAtlas.jsx",
+      "src/App.jsx",
+      "src/campusAtlas.css"
+    ]
+  },
+  "actual": {
+    "capture_bytes": 1469985,
+    "source_bytes": 100008,
+    "source_amplification": 14.7
+  },
+  "evidence_limits": [
+    "Desktop1280x720 only; no source mobile/keyboard/full accessibility audit",
+    "VR, route results, all categories, remaining campuses and all zoom levels not fully tested",
+    "Screenshot names retained; actual JPEG media header recorded independently of extension",
+    "Reference school geography, buildings and brands are not Taihu facts"
+  ]
+}

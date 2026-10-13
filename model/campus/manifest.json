@@ -1,0 +1,710 @@
+{
+  "status": "In progress: technical baseline verified; final visual acceptance not achieved",
+  "updated": "2026-09-08T20:17:56.700305+08:00",
+  "coverage": {
+    "source_traced_building_parts": 127,
+    "central_detailed_groups": 3,
+    "sports_tracks": 4,
+    "court_groups": 10,
+    "gate_location_nodes": 3,
+    "source_positioned_illustrative_tree_crowns": 1974
+  },
+  "method": "Fixed georeferenced imagery and school photographs; unchanged traced roofs, photo/type facade estimates, geographic central-study assembly, source-interpreted road corrections and vector hardscape, Blender Cycles rendering; no AI images or external vegetation models",
+  "source_urls": {
+    "imagery": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+    "aerial": "https://www.wxu.edu.cn/info/1111/57421.htm",
+    "teaching6": "https://www.wxu.edu.cn/info/1111/57381.htm",
+    "lake": "https://zs.wxu.edu.cn/info/1371/3632.htm"
+  },
+  "visual_reference_cases": [
+    {
+      "url": "https://gis.whut.edu.cn/index.shtml",
+      "role": "User reference; birdseye architectural readability, roads/planting hierarchy, imagery context"
+    },
+    {
+      "url": "https://openinfo.shanghaitech.edu.cn/2019/0710/c147a43581/page.psp",
+      "role": "Official 2.5D campus presentation; visual reference only, no borrowed campus geometry"
+    }
+  ],
+  "generation_commands": [
+    "python model/campus/prepare.py --export-only",
+    "python model/campus/roads.py",
+    "Blender --background -t 4 --python model/campus/build.py -- --candidate",
+    "Blender --background --python model/campus/verify_scene.py -- --candidate",
+    "Install the individually checked campus.blend/campus.glb at stable paths; finalize_glb_colors in build.py preserves procedural display colors",
+    "Blender --background -t 4 --python model/campus/render.py",
+    "Blender --background -t 2 --python model/campus/render.py -- --detail",
+    "Blender --background --python model/campus/verify_scene.py"
+  ],
+  "acceptance": {
+    "GEO-01": "validation.json: all 127 source body vertex positions and source trace baseline hash",
+    "GEO-02": "validation.json: three central groups preserve source vertices, topology and face materials after geographic translation",
+    "GEO-03": "validation.json and roads.json: zero final display-surface intersections with roof/water masks; navigation not validated",
+    "VIS-01": "Native output dimensions and generation verified; final case-comparison visual acceptance FAILED / needs refinement. Existing renders retained as development baseline.",
+    "WEB-01": "validation.json: model loading, preserved colors/trees, search, selection, desktop/mobile states, default satellite entry"
+  },
+  "baseline_source_building_trace_sha256": "ec0ed51e767385d5e356f67e94f4079f67bd205275747937c2ecace8a6aa1dd8",
+  "external_fixed_inputs_sha256": {
+    "model/study/campus.blend": "9fc3c3de083167bc015931b953e0569869621cd449f6a25a5edc927fc275ce8a",
+    "model/study/manifest.json": "bb01705118e3019aa084b016164dda890789fc735fcddfd40f39ac0937003401",
+    "model/central-campus/footprints.json": "2f6bd2741b16af476b53ad871167dfb0c66292144d11e6ce3d6dfaa057c7abd7",
+    "model/central-campus/references/satellite-export.json": "438a664f9363d783548c89fd5e696307aa8481acf2473114321af16158c3d6a9",
+    "model/central-campus/references/satellite.jpg": "9ec90612031c2a039eb433c278fd4fb7dbfc62b0cf2907557d363b066a52c640",
+    "model/central-campus/references/campus-aerial.jpg": "1c0d935403e643889873e06439b1f4d26a536eea4af673321a993ca71fbb60d5",
+    "model/central-campus/references/teach6.jpg": "b5057c42b21a4e8b4b8089c6df28546fe8b9050fd1714ad20c80b2616473e182",
+    "model/central-campus/references/lake-photo.jpg": "4f46d976823318408589519f44a5077c68fb4fde82d88f74dc9bbe2daca508a5",
+    "public/assets/campus-map.jpg": "bbdcd8658020cb4d1dfec470fa77006043cfec19d288db1bb7713552ecf91f05"
+  },
+  "render_generations": [
+    {
+      "name": "campus",
+      "width": 8192,
+      "height": 4608,
+      "tiles": [
+        {
+          "sha256": "4b0448f5fa4853013ccead4cee92bfb67334774a94ad9577658ad2a0c44a32c8",
+          "core": [
+            0,
+            0,
+            2048,
+            1152
+          ],
+          "render_bounds": [
+            0,
+            0,
+            2080,
+            1184
+          ]
+        },
+        {
+          "sha256": "3ce2e0f66ac9b2adfb2014c6948609853a555f18e11966c25807600d6a7baaaa",
+          "core": [
+            2048,
+            0,
+            4096,
+            1152
+          ],
+          "render_bounds": [
+            2016,
+            0,
+            4128,
+            1184
+          ]
+        },
+        {
+          "sha256": "f75b43afd61baf56ff3bfeda1f5204a5becb9b7d59c4c136d5fbd61b99f14619",
+          "core": [
+            4096,
+            0,
+            6144,
+            1152
+          ],
+          "render_bounds": [
+            4064,
+            0,
+            6176,
+            1184
+          ]
+        },
+        {
+          "sha256": "f56112f868d4978251517609a8ac3a74267feed7c16ed52ef68521c57331577f",
+          "core": [
+            6144,
+            0,
+            8192,
+            1152
+          ],
+          "render_bounds": [
+            6112,
+            0,
+            8192,
+            1184
+          ]
+        },
+        {
+          "sha256": "896eb4c972cc1e113bf6e6fe1c8cd58f050ccab61e56433918ce7e996a787a50",
+          "core": [
+            0,
+            1152,
+            2048,
+            2304
+          ],
+          "render_bounds": [
+            0,
+            1120,
+            2080,
+            2336
+          ]
+        },
+        {
+          "sha256": "b66c725a942312882ee6caee3301614e0598506e58ca76de1403e912b97e41b1",
+          "core": [
+            2048,
+            1152,
+            4096,
+            2304
+          ],
+          "render_bounds": [
+            2016,
+            1120,
+            4128,
+            2336
+          ]
+        },
+        {
+          "sha256": "f2ef89661a21f55818d072c58303d3487a69980d867adcb616dd5dffbd40c54c",
+          "core": [
+            4096,
+            1152,
+            6144,
+            2304
+          ],
+          "render_bounds": [
+            4064,
+            1120,
+            6176,
+            2336
+          ]
+        },
+        {
+          "sha256": "2f72b64e9ac5ecb9f502019291c857d11e3dc7f53b717f8f27e41e436644c552",
+          "core": [
+            6144,
+            1152,
+            8192,
+            2304
+          ],
+          "render_bounds": [
+            6112,
+            1120,
+            8192,
+            2336
+          ]
+        },
+        {
+          "sha256": "0395b2648b2c5bd081b9a72efa5e76da31e66e5b8d3292e0b2d53c5b0ba8179f",
+          "core": [
+            0,
+            2304,
+            2048,
+            3456
+          ],
+          "render_bounds": [
+            0,
+            2272,
+            2080,
+            3488
+          ]
+        },
+        {
+          "sha256": "8fdbc6787e19e1fda3a8df8de79e5289fde19eaffc84844742ef1e81472914a9",
+          "core": [
+            2048,
+            2304,
+            4096,
+            3456
+          ],
+          "render_bounds": [
+            2016,
+            2272,
+            4128,
+            3488
+          ]
+        },
+        {
+          "sha256": "e8a85abcf1ad3a751aad39488d6300be3959f91fe84ea4f1ddc94be7ecb5f83f",
+          "core": [
+            4096,
+            2304,
+            6144,
+            3456
+          ],
+          "render_bounds": [
+            4064,
+            2272,
+            6176,
+            3488
+          ]
+        },
+        {
+          "sha256": "840f8cac4e403270b6e34fce4736bf57708f11b14a7b1ae1b3df56d16c879c27",
+          "core": [
+            6144,
+            2304,
+            8192,
+            3456
+          ],
+          "render_bounds": [
+            6112,
+            2272,
+            8192,
+            3488
+          ]
+        },
+        {
+          "sha256": "27db09476ffafa6efe41a4a6f2a97e276192e1bd966a7e4c3ab7711aec04de63",
+          "core": [
+            0,
+            3456,
+            2048,
+            4608
+          ],
+          "render_bounds": [
+            0,
+            3424,
+            2080,
+            4608
+          ]
+        },
+        {
+          "sha256": "6d4ffe8cc44d3822466a4bda0ec78bd361e9822b07e12fd1ad0db35e595cc83d",
+          "core": [
+            2048,
+            3456,
+            4096,
+            4608
+          ],
+          "render_bounds": [
+            2016,
+            3424,
+            4128,
+            4608
+          ]
+        },
+        {
+          "sha256": "98f985d9c1b517ff410f8b20f067ff67b080e864e69304200c45405ed6a47428",
+          "core": [
+            4096,
+            3456,
+            6144,
+            4608
+          ],
+          "render_bounds": [
+            4064,
+            3424,
+            6176,
+            4608
+          ]
+        },
+        {
+          "sha256": "4d76fc583ad77a79b03a001f6e9bae4078dad6a24759b8e05f39f83ede9b727a",
+          "core": [
+            6144,
+            3456,
+            8192,
+            4608
+          ],
+          "render_bounds": [
+            6112,
+            3424,
+            8192,
+            4608
+          ]
+        }
+      ],
+      "samples": 24,
+      "overlap_pixels": 32,
+      "assembly": "streamed into in-memory canvas; tile hashes are generation transcript, individual tiles are not archived",
+      "output_sha256": "d999974dd7846d89d7bb27c26187a86793afefd27a0f749a921c0fc2b8305df2"
+    },
+    {
+      "name": "campus-plan",
+      "width": 8192,
+      "height": 4096,
+      "tiles": [
+        {
+          "sha256": "09ad960fdc8502ed5e2b096f4a7eeddcb9ba1f71db59c30bd932a111d48bd3af",
+          "core": [
+            0,
+            0,
+            2048,
+            1024
+          ],
+          "render_bounds": [
+            0,
+            0,
+            2080,
+            1056
+          ]
+        },
+        {
+          "sha256": "d3c1fdeec9c1a631858f61acd239c648601c4664a5812631dcb507c84b6d726f",
+          "core": [
+            2048,
+            0,
+            4096,
+            1024
+          ],
+          "render_bounds": [
+            2016,
+            0,
+            4128,
+            1056
+          ]
+        },
+        {
+          "sha256": "de760683cad37c83a7a6932d95d7b84cb65d774d2492fbc2c70d3ab4902c3ca8",
+          "core": [
+            4096,
+            0,
+            6144,
+            1024
+          ],
+          "render_bounds": [
+            4064,
+            0,
+            6176,
+            1056
+          ]
+        },
+        {
+          "sha256": "8d1d00358759c000fc1fcb71e6bbdaf9432a3ff4f7b4f418ff92e490d80493c2",
+          "core": [
+            6144,
+            0,
+            8192,
+            1024
+          ],
+          "render_bounds": [
+            6112,
+            0,
+            8192,
+            1056
+          ]
+        },
+        {
+          "sha256": "45c1302314228c37c57b20c780335fa0672a82f5df3150f58df00a85f2e2d8e3",
+          "core": [
+            0,
+            1024,
+            2048,
+            2048
+          ],
+          "render_bounds": [
+            0,
+            992,
+            2080,
+            2080
+          ]
+        },
+        {
+          "sha256": "1fac24dc051517dca66a40db31e1372d43bb4ac78b181fcbc1f5be3f19b7b862",
+          "core": [
+            2048,
+            1024,
+            4096,
+            2048
+          ],
+          "render_bounds": [
+            2016,
+            992,
+            4128,
+            2080
+          ]
+        },
+        {
+          "sha256": "fbb723c71fd7d111b94b43bb16b25c7b24a03d5920ec0c9ff0d91cfba04015bb",
+          "core": [
+            4096,
+            1024,
+            6144,
+            2048
+          ],
+          "render_bounds": [
+            4064,
+            992,
+            6176,
+            2080
+          ]
+        },
+        {
+          "sha256": "36c602ac72d09688735509ddec1e0c908b6bc66ff8fb5fa52741df0d781ec139",
+          "core": [
+            6144,
+            1024,
+            8192,
+            2048
+          ],
+          "render_bounds": [
+            6112,
+            992,
+            8192,
+            2080
+          ]
+        },
+        {
+          "sha256": "1c11ed7e67078a1656cb5352f7c8c43d7a532f77b6f90d6be3d23539f1dafbd9",
+          "core": [
+            0,
+            2048,
+            2048,
+            3072
+          ],
+          "render_bounds": [
+            0,
+            2016,
+            2080,
+            3104
+          ]
+        },
+        {
+          "sha256": "16f81de58542c7b6d3ab063d7aba8b57a257964d2b46924bfde445e9fcea1ac9",
+          "core": [
+            2048,
+            2048,
+            4096,
+            3072
+          ],
+          "render_bounds": [
+            2016,
+            2016,
+            4128,
+            3104
+          ]
+        },
+        {
+          "sha256": "9e258b2fad96d1d5b9ab75a4645c0b7265bf2295df39ee422536f969a41b8aae",
+          "core": [
+            4096,
+            2048,
+            6144,
+            3072
+          ],
+          "render_bounds": [
+            4064,
+            2016,
+            6176,
+            3104
+          ]
+        },
+        {
+          "sha256": "37a9e5778dd954d824afeb5aad5eb3284e4329c33528ab10a9695e7744ae4b4a",
+          "core": [
+            6144,
+            2048,
+            8192,
+            3072
+          ],
+          "render_bounds": [
+            6112,
+            2016,
+            8192,
+            3104
+          ]
+        },
+        {
+          "sha256": "c4edc702278ad4203830d0cd693f9ad794098e2b79616642c5cee1ba64c9d230",
+          "core": [
+            0,
+            3072,
+            2048,
+            4096
+          ],
+          "render_bounds": [
+            0,
+            3040,
+            2080,
+            4096
+          ]
+        },
+        {
+          "sha256": "008e1844b83fb36bed1d27b7ae66b7e036ebf05b9099c14c48a34c8b069abe19",
+          "core": [
+            2048,
+            3072,
+            4096,
+            4096
+          ],
+          "render_bounds": [
+            2016,
+            3040,
+            4128,
+            4096
+          ]
+        },
+        {
+          "sha256": "592785a1ca16dab1ee9407e05ac533229f612fd719d8e6990d345bb25802e4cf",
+          "core": [
+            4096,
+            3072,
+            6144,
+            4096
+          ],
+          "render_bounds": [
+            4064,
+            3040,
+            6176,
+            4096
+          ]
+        },
+        {
+          "sha256": "27b42db35b8f8ccd867075756a9244f21e5abc153ab02db15a842f536f2ac59e",
+          "core": [
+            6144,
+            3072,
+            8192,
+            4096
+          ],
+          "render_bounds": [
+            6112,
+            3040,
+            8192,
+            4096
+          ]
+        }
+      ],
+      "samples": 16,
+      "overlap_pixels": 32,
+      "assembly": "streamed into in-memory canvas; tile hashes are generation transcript, individual tiles are not archived",
+      "output_sha256": "eae2330172be78b541bac5fd4320fba2269f895f58a1dd8974c25c1fa08d4952"
+    },
+    {
+      "name": "campus-detail",
+      "width": 3200,
+      "height": 2000,
+      "tiles": [
+        {
+          "sha256": "1c65d8ca8a5b9b0a3d4c31e29755b4aba5062eb5cf1faa21c89c5e2eb6e57a5f",
+          "core": [
+            0,
+            0,
+            1600,
+            1000
+          ],
+          "render_bounds": [
+            0,
+            0,
+            1632,
+            1032
+          ]
+        },
+        {
+          "sha256": "cb76d6e9f1fce19303cf3d2f9f12704c87dd6d616f675e2b6dbe78f8800233e0",
+          "core": [
+            1600,
+            0,
+            3200,
+            1000
+          ],
+          "render_bounds": [
+            1568,
+            0,
+            3200,
+            1032
+          ]
+        },
+        {
+          "sha256": "0ab326177c6deef772c13c30741ea4a1f98b88dfd8c11dbd066f6193e03e3ee8",
+          "core": [
+            0,
+            1000,
+            1600,
+            2000
+          ],
+          "render_bounds": [
+            0,
+            968,
+            1632,
+            2000
+          ]
+        },
+        {
+          "sha256": "5caff30b93b2eeb91923fbfb52a176eacaec7afb55106c5b49c26e77cf408cfa",
+          "core": [
+            1600,
+            1000,
+            3200,
+            2000
+          ],
+          "render_bounds": [
+            1568,
+            968,
+            3200,
+            2000
+          ]
+        }
+      ],
+      "samples": 32,
+      "overlap_pixels": 32,
+      "assembly": "streamed into in-memory canvas; tile hashes are generation transcript, individual tiles are not archived",
+      "output_sha256": "6cbace35b978bd912b3de9dff53453b8229a33b6a8e78de7d9991bafd908cca1"
+    }
+  ],
+  "render_source_sha256": {
+    "campus.blend": "324aa53083823d1b7d18113337aa6a3733d4fe898312bee0e442bd308b490703",
+    "render.py": "6aa283fc664835c998b3a5cfde4ebabf473348f7a054efb8730767705a3d5aa4",
+    "assemble.py": "6b1fe730caf4d3ff9eb57486ae3db856650b76f3ea433eea48ce27710e0ad9f3"
+  },
+  "limitations": [
+    "Height, floor counts, window/balcony details and unseen facades are estimates, not surveyed",
+    "Visible roofs include source parallax and eaves; not measured ground footprints",
+    "Working identifiers and region descriptions are not confirmed official building numbers",
+    "Automatic hardscape classification is simplified and can miss shaded/occluded boundaries",
+    "Road surface geometry is not a verified routable network; legacy outside-road traces are marked unverified and unmodeled",
+    "Imagery and photographs have unresolved capture chronology",
+    "No measured terrain elevations, indoor spaces or inventoried tree species",
+    "Full-campus tree LOD is simplified; independent central study preserves finer leaves",
+    "Web procedural surface finish is an approximation of Blender shading"
+  ],
+  "skills": {
+    "main": "redesign-existing-projects for focused viewer integration",
+    "auxiliary": "playwright for browser QA",
+    "modeling": "Direct Blender/GIS scripts; no overlapping aesthetic or image-generation skills"
+  },
+  "artifacts_sha256": {
+    "README.md": "8fe7274ffff231d7adc60a2c5d4705c60bd8f250e978da5f4f37082e38f7276d",
+    "alignment.png": "2240fbd77dd16e0a993a53601cc21e4a835081b4c76460854bfc504ec2bea212",
+    "alignment.py": "365a9a98fa93df1fe3e896310a3b9f9a23392ac53018c9120a978a2cf91ca6b0",
+    "assemble.py": "6b1fe730caf4d3ff9eb57486ae3db856650b76f3ea433eea48ce27710e0ad9f3",
+    "build.py": "2da462d91cb6b0a0f9d3541f7732be6e88fc32b448bb73bdc89bba52741837ed",
+    "campus-detail.png": "6cbace35b978bd912b3de9dff53453b8229a33b6a8e78de7d9991bafd908cca1",
+    "campus-plan.png": "eae2330172be78b541bac5fd4320fba2269f895f58a1dd8974c25c1fa08d4952",
+    "campus.blend": "324aa53083823d1b7d18113337aa6a3733d4fe898312bee0e442bd308b490703",
+    "campus.geojson": "bb2e8c28ffb7b4b1f8e037d61ab732fc6ba032d1575115a0fb3273635e9d2d56",
+    "campus.glb": "fcca1993f570d981951412079f87035bddd629fe265cc61c453693690ad914a1",
+    "campus.png": "d999974dd7846d89d7bb27c26187a86793afefd27a0f749a921c0fc2b8305df2",
+    "layout.json": "15263a5b2337df0148a517890788412b3bd13c3f27046e6d75f542abc77761c6",
+    "prepare.py": "d375b20de878fdf61c98e7d5c43230897ab1da5cae7fe1d7a77a29e03c1d7aba",
+    "references/north-extension.jpg": "b7e6b16b7a08ab65ccf5f9f5b90d9dd367ffa9eb61264300787eec816f788bcc",
+    "references/north-extension.json": "b0156c2a4300ffc92a54fe4fa8f5e95f60366dbf9a85db05978270241bff446a",
+    "references/satellite-export.json": "368bc5f95e384dc649c7a6f6b593cbfc6675d8f2522ba5cfcffad06e7271becd",
+    "references/satellite.jpg": "25393f19f1bb0dd76aec3479238a37858d3a8828f0329f1fb727ac577aa583b2",
+    "render.py": "6aa283fc664835c998b3a5cfde4ebabf473348f7a054efb8730767705a3d5aa4",
+    "roads.json": "e00c3eda53c6d5c03006e07352e6af48e79cb4e1fef5f0903f08abff159f2bea",
+    "roads.py": "d09221a9ca93355902144b4d858bc5c2de0eac2347e8a12fca2873987df3f44a",
+    "validation.json": "a9c97f7718abc1f26146583f07203748111366e64ba34970430c23b8a7c3dc7b",
+    "verify_scene.py": "ca7b46e18ef953bc920cf7eb044a9e4e73700cfeebc00a01742c25c2a89dd132",
+    "建筑对应表.md": "38639ec8d6303a2025fc65ed0f3ecee8a406d40162fcc23212aa6008045e9564"
+  },
+  "capacity": {
+    "model_file_count": 49,
+    "model_bytes_before_manifest_reseal": 197993121,
+    "model_limits": {
+      "bytes": 201326592,
+      "files": 50
+    },
+    "campus_file_count": 24,
+    "campus_bytes_before_manifest_reseal": 116423255,
+    "campus_limits": {
+      "bytes": 134217728,
+      "files": 25
+    },
+    "source_bytes": 537806,
+    "regenerable_output_bytes": 111566668,
+    "amplification": 207.44779344224497,
+    "amplification_limit": 1500
+  },
+  "visual_acceptance": {
+    "status": "needs_refinement",
+    "reviewed_at": "2026-09-08T20:17:56.700305+08:00",
+    "reference_url": "https://gis.whut.edu.cn/index.shtml",
+    "method": "Visual comparison of the current reference map and local model viewer at desktop overview scale. Diagnostic screenshots are temporary, not sealed delivery evidence.",
+    "findings": [
+      "Large flat ground areas, fragmented paving edges and visible lawn joins",
+      "Repetitive building facades and insufficient individual roof character",
+      "Repetitive vegetation and flat dark lake appearance",
+      "Whole-campus composition and label hierarchy not at target presentation quality"
+    ],
+    "delivery_ready": false
+  }
+}

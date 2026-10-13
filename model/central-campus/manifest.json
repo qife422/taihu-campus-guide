@@ -1,0 +1,49 @@
+{
+  "status": "satellite_and_photo_supported_review_model; not surveyed or school-approved",
+  "supersedes": "previous diagram-only massing at same filenames",
+  "blender_version": "5.2.1 LTS",
+  "method": "manual satellite tracing; photo interpreted facade and roof components; estimated vertical dimensions; procedural meshes rendered by Cycles",
+  "source_urls": {
+    "satellite": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+    "teach6": "https://www.wxu.edu.cn/info/1111/57381.htm",
+    "aerial": "https://www.wxu.edu.cn/info/1111/57421.htm",
+    "lake": "https://zs.wxu.edu.cn/info/1371/3632.htm"
+  },
+  "uncertainties": [
+    "Satellite acquisition date unknown",
+    "Roof edges have perspective displacement",
+    "Floor heights and total heights estimated",
+    "Hidden facades use simplified continuation, not verified",
+    "Individual window module count estimated from rhythm",
+    "Tree positions from visible canopy clusters; species and crown shape illustrative",
+    "B07/B08 building names not yet verified",
+    "Cross-source chronology not established"
+  ],
+  "artifacts": {
+    "README.md": "3cd19396b9dcefcbcd6ff3f53d0394382737d20fbd99e8c56c7551bda21354f8",
+    "build.py": "2679dfb499ca53a305f30c91314c2ab45fd7aaa00e06511ef047a997f986732a",
+    "central-campus-plan.png": "d2b96425eee9c13b4d30dc4783c8d62743c01857b2f15a5aaab2f32b7eceddf8",
+    "central-campus.blend": "a0a13a3a255255490bf3a12a244e3e019f662e3c4b4ce220690460faeff3a2d1",
+    "central-campus.png": "4865270837bc1a34f7ddc94cce1282fc60313b4575d68f2e93460e0b646e3a86",
+    "footprints.geojson": "58642c3a3424a87692ab00b5ece25564f1052724213ce440260e9cb6e5113e75",
+    "footprints.json": "2f6bd2741b16af476b53ad871167dfb0c66292144d11e6ce3d6dfaa057c7abd7",
+    "references/campus-aerial.jpg": "1c0d935403e643889873e06439b1f4d26a536eea4af673321a993ca71fbb60d5",
+    "references/lake-photo.jpg": "4f46d976823318408589519f44a5077c68fb4fde82d88f74dc9bbe2daca508a5",
+    "references/satellite-export.json": "438a664f9363d783548c89fd5e696307aa8481acf2473114321af16158c3d6a9",
+    "references/satellite.jpg": "9ec90612031c2a039eb433c278fd4fb7dbfc62b0cf2907557d363b066a52c640",
+    "references/teach6.jpg": "b5057c42b21a4e8b4b8089c6df28546fe8b9050fd1714ad20c80b2616473e182",
+    "teach6-detail.png": "7314208b7dd249719399205d11a3db1d29bf1ecc9315d396452a19f1a1412099",
+    "validate.py": "9a93252dee5a9361237684fc45b3a935d697f0b0f941afe60eec30c1683bbb75",
+    "validation.json": "cec0c647b323ea0f67355bcf2492842087c586af796fd9fdaf5dcdac85dd3b9a"
+  },
+  "validation": {
+    "report": "validation.json",
+    "status": "passed",
+    "scope": "geometry consistency and render framing, not physical accuracy",
+    "visual_review": [
+      "central-campus.png",
+      "central-campus-plan.png",
+      "teach6-detail.png"
+    ]
+  }
+}

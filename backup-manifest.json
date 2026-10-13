@@ -1,0 +1,1184 @@
+{
+  "schema_version": 1,
+  "project_name": "太湖校园导览 Demo",
+  "repository": "https://github.com/qife422/taihu-campus-guide",
+  "branch": "source",
+  "method": "SHA-256 of every staged project file except this self-referential manifest; staged Git blob IDs included",
+  "scope": "Source, original models/imagery, web assets, all retained output records and project documentation; no dependencies, build replicas, browser caches or credentials",
+  "excluded_directories": [
+    "node_modules/",
+    "dist/",
+    ".playwright-cli/",
+    ".git/",
+    "__pycache__/",
+    ".codex/",
+    ".claude/"
+  ],
+  "limits": {
+    "files": 250,
+    "bytes": 335544320,
+    "single_file_bytes": 52428800
+  },
+  "file_count": 193,
+  "file_bytes": 274560464,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 84,
+      "sha256": "3c2988036f96824c0033f4419ff4eeeb8ef234a8953193e1a3cf1391826f60d4",
+      "git_blob_sha1": "7c4d76083bd40efda1363fe26962653e8eb97d8f"
+    },
+    {
+      "path": ".github/workflows/deploy-pages.yml",
+      "bytes": 895,
+      "sha256": "d0c5041bcec769bc05cb89373a3740dd35507114a97f862e7783788bd18c0b30",
+      "git_blob_sha1": "384907f0992461c3be973351258833aeb2f31f58"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 260,
+      "sha256": "f7db38403398ecfa6e140aa25da8649e0eddcce0e8dea852a2b511f5b09f44d8",
+      "git_blob_sha1": "db4eb5988bd7d5125c349c0952f9e2901e6d4e3a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 64994,
+      "sha256": "bb916b74528e5e250ada0dd9518c038d521cf646da0aa6edfa285c7f3476c855",
+      "git_blob_sha1": "8b5aae415f84bfbb6ea356e3a548caa24296c870"
+    },
+    {
+      "path": "index.html",
+      "bytes": 506,
+      "sha256": "1079668750f0066de3114c20870a83ada60cca6318a30fc54d0cb3823969efff",
+      "git_blob_sha1": "d8b036426699045b5472e74f0bba7289fedb504c"
+    },
+    {
+      "path": "model/README.md",
+      "bytes": 986,
+      "sha256": "7d52d703d72a7bb9af8c647be5010b8aa148064c406d09e9c985ff2d814d4311",
+      "git_blob_sha1": "2741dd704c93f4c0ee71eca881b27a626f222ebd"
+    },
+    {
+      "path": "model/campus/README.md",
+      "bytes": 10400,
+      "sha256": "8fe7274ffff231d7adc60a2c5d4705c60bd8f250e978da5f4f37082e38f7276d",
+      "git_blob_sha1": "27a421c885132b7c709fad15132e2f8d8b5b81d1"
+    },
+    {
+      "path": "model/campus/alignment.png",
+      "bytes": 1722411,
+      "sha256": "2240fbd77dd16e0a993a53601cc21e4a835081b4c76460854bfc504ec2bea212",
+      "git_blob_sha1": "d39c4e62c128ebf0cb2e20552e9407640bcd1823"
+    },
+    {
+      "path": "model/campus/alignment.py",
+      "bytes": 2095,
+      "sha256": "365a9a98fa93df1fe3e896310a3b9f9a23392ac53018c9120a978a2cf91ca6b0",
+      "git_blob_sha1": "88b3d52c1a7f75968648d3ca8028478d9b2b25fe"
+    },
+    {
+      "path": "model/campus/assemble.py",
+      "bytes": 1661,
+      "sha256": "6b1fe730caf4d3ff9eb57486ae3db856650b76f3ea433eea48ce27710e0ad9f3",
+      "git_blob_sha1": "684eeb44447679fcf2f0ead6455dd036f8af1c80"
+    },
+    {
+      "path": "model/campus/build.py",
+      "bytes": 30683,
+      "sha256": "2da462d91cb6b0a0f9d3541f7732be6e88fc32b448bb73bdc89bba52741837ed",
+      "git_blob_sha1": "43f1bb867debc1d793e74cca36fc4fce63d4948e"
+    },
+    {
+      "path": "model/campus/campus-detail.png",
+      "bytes": 9601688,
+      "sha256": "6cbace35b978bd912b3de9dff53453b8229a33b6a8e78de7d9991bafd908cca1",
+      "git_blob_sha1": "2dfa38af6d20db557c74de21ae4ce94cd05eb66f"
+    },
+    {
+      "path": "model/campus/campus-plan.png",
+      "bytes": 25414176,
+      "sha256": "eae2330172be78b541bac5fd4320fba2269f895f58a1dd8974c25c1fa08d4952",
+      "git_blob_sha1": "f9c7e8f4561bd7628605f4ed63ee742cc206b3ee"
+    },
+    {
+      "path": "model/campus/campus.blend",
+      "bytes": 34885497,
+      "sha256": "324aa53083823d1b7d18113337aa6a3733d4fe898312bee0e442bd308b490703",
+      "git_blob_sha1": "f8ad062cae75a1870bcbcba90596793810c89f4d"
+    },
+    {
+      "path": "model/campus/campus.geojson",
+      "bytes": 358192,
+      "sha256": "bb2e8c28ffb7b4b1f8e037d61ab732fc6ba032d1575115a0fb3273635e9d2d56",
+      "git_blob_sha1": "53b44b142a1b78db73aa469a30b89837bc333035"
+    },
+    {
+      "path": "model/campus/campus.glb",
+      "bytes": 20188932,
+      "sha256": "fcca1993f570d981951412079f87035bddd629fe265cc61c453693690ad914a1",
+      "git_blob_sha1": "bdac9bc3607978a70ba7f91d1ec4478ebc189775"
+    },
+    {
+      "path": "model/campus/campus.png",
+      "bytes": 19977483,
+      "sha256": "d999974dd7846d89d7bb27c26187a86793afefd27a0f749a921c0fc2b8305df2",
+      "git_blob_sha1": "7f34875b95b8977b47d1dc256ad40cc0e46cc8cf"
+    },
+    {
+      "path": "model/campus/layout.json",
+      "bytes": 471091,
+      "sha256": "15263a5b2337df0148a517890788412b3bd13c3f27046e6d75f542abc77761c6",
+      "git_blob_sha1": "47d49bd326b092415a5f1ccccdbbbe3819eac146"
+    },
+    {
+      "path": "model/campus/manifest.json",
+      "bytes": 21321,
+      "sha256": "048e4a24eece3bb6878a40b3c71dc3293354830dd4fb2410634110c459015eb8",
+      "git_blob_sha1": "29dd285c8bf1d5d242a5f49d5f9cb0d3735f5b78"
+    },
+    {
+      "path": "model/campus/prepare.py",
+      "bytes": 9597,
+      "sha256": "d375b20de878fdf61c98e7d5c43230897ab1da5cae7fe1d7a77a29e03c1d7aba",
+      "git_blob_sha1": "244d8f4b0b9c25c599ab53bb3e8fe936be395fcc"
+    },
+    {
+      "path": "model/campus/references/north-extension.jpg",
+      "bytes": 255898,
+      "sha256": "b7e6b16b7a08ab65ccf5f9f5b90d9dd367ffa9eb61264300787eec816f788bcc",
+      "git_blob_sha1": "95ca0c738e41bea6414dabc21dd3ad299f056413"
+    },
+    {
+      "path": "model/campus/references/north-extension.json",
+      "bytes": 413,
+      "sha256": "b0156c2a4300ffc92a54fe4fa8f5e95f60366dbf9a85db05978270241bff446a",
+      "git_blob_sha1": "ac9dd46d2e07b8a286168b64b23dbb1a9368975d"
+    },
+    {
+      "path": "model/campus/references/satellite-export.json",
+      "bytes": 442,
+      "sha256": "368bc5f95e384dc649c7a6f6b593cbfc6675d8f2522ba5cfcffad06e7271becd",
+      "git_blob_sha1": "edd48f5d9691862a0fa516f732f7448ec30ce2ab"
+    },
+    {
+      "path": "model/campus/references/satellite.jpg",
+      "bytes": 2272663,
+      "sha256": "25393f19f1bb0dd76aec3479238a37858d3a8828f0329f1fb727ac577aa583b2",
+      "git_blob_sha1": "74a67a6d86ff07682abf979e4df7d14fc28b2801"
+    },
+    {
+      "path": "model/campus/render.py",
+      "bytes": 4308,
+      "sha256": "6aa283fc664835c998b3a5cfde4ebabf473348f7a054efb8730767705a3d5aa4",
+      "git_blob_sha1": "9d6c57c02e866f047309fa610a17cdd675a18c54"
+    },
+    {
+      "path": "model/campus/roads.json",
+      "bytes": 1140700,
+      "sha256": "e00c3eda53c6d5c03006e07352e6af48e79cb4e1fef5f0903f08abff159f2bea",
+      "git_blob_sha1": "814e30826a2e6f7abc8291e8b6b7e23262086b98"
+    },
+    {
+      "path": "model/campus/roads.py",
+      "bytes": 10679,
+      "sha256": "d09221a9ca93355902144b4d858bc5c2de0eac2347e8a12fca2873987df3f44a",
+      "git_blob_sha1": "388ef51b158a064d4a43f2517efdf649f899df15"
+    },
+    {
+      "path": "model/campus/validation.json",
+      "bytes": 42351,
+      "sha256": "a9c97f7718abc1f26146583f07203748111366e64ba34970430c23b8a7c3dc7b",
+      "git_blob_sha1": "95625c86cb9e9ede420835eb8851c413e4df7d02"
+    },
+    {
+      "path": "model/campus/verify_scene.py",
+      "bytes": 7692,
+      "sha256": "ca7b46e18ef953bc920cf7eb044a9e4e73700cfeebc00a01742c25c2a89dd132",
+      "git_blob_sha1": "7f7407fb78dcc6071fb58c79feb4be673087ed0b"
+    },
+    {
+      "path": "model/campus/建筑对应表.md",
+      "bytes": 10583,
+      "sha256": "38639ec8d6303a2025fc65ed0f3ecee8a406d40162fcc23212aa6008045e9564",
+      "git_blob_sha1": "0bb466c4d2244582482e0e2bbc1aac6fb33432e6"
+    },
+    {
+      "path": "model/central-campus/README.md",
+      "bytes": 4868,
+      "sha256": "3cd19396b9dcefcbcd6ff3f53d0394382737d20fbd99e8c56c7551bda21354f8",
+      "git_blob_sha1": "2747ebcbcfb508dbaa74bd2b8f613df011790f7e"
+    },
+    {
+      "path": "model/central-campus/build.py",
+      "bytes": 19383,
+      "sha256": "2679dfb499ca53a305f30c91314c2ab45fd7aaa00e06511ef047a997f986732a",
+      "git_blob_sha1": "f1900575032b685c08ea7c8c014c578bf3b1a972"
+    },
+    {
+      "path": "model/central-campus/central-campus-plan.png",
+      "bytes": 8068524,
+      "sha256": "d2b96425eee9c13b4d30dc4783c8d62743c01857b2f15a5aaab2f32b7eceddf8",
+      "git_blob_sha1": "960757bf139e5a344e95269249427cf93ace0d26"
+    },
+    {
+      "path": "model/central-campus/central-campus.blend",
+      "bytes": 4688533,
+      "sha256": "4448c4a458a58329320ae3a0bcb1eecc6d6e08fd02416dc3ea78b80cfd41b3af",
+      "git_blob_sha1": "e97aa16dd0b5597569414aee27e3a68c8db89082"
+    },
+    {
+      "path": "model/central-campus/central-campus.blend1",
+      "bytes": 4428869,
+      "sha256": "a0a13a3a255255490bf3a12a244e3e019f662e3c4b4ce220690460faeff3a2d1",
+      "git_blob_sha1": "e08752fe465f5d1fbd8bb5a4e9bf511ff6058433"
+    },
+    {
+      "path": "model/central-campus/central-campus.png",
+      "bytes": 8882766,
+      "sha256": "4865270837bc1a34f7ddc94cce1282fc60313b4575d68f2e93460e0b646e3a86",
+      "git_blob_sha1": "face1de5e11b640d02ae8dcb5b65b4168dbe6ebc"
+    },
+    {
+      "path": "model/central-campus/footprints.geojson",
+      "bytes": 17432,
+      "sha256": "58642c3a3424a87692ab00b5ece25564f1052724213ce440260e9cb6e5113e75",
+      "git_blob_sha1": "4cd3b8a8564dc67e2ae9d9141a314c679a8017b7"
+    },
+    {
+      "path": "model/central-campus/footprints.json",
+      "bytes": 10272,
+      "sha256": "2f6bd2741b16af476b53ad871167dfb0c66292144d11e6ce3d6dfaa057c7abd7",
+      "git_blob_sha1": "e1305cdc13eae7de72b736ae5b1dbba2fa1b65e9"
+    },
+    {
+      "path": "model/central-campus/manifest.json",
+      "bytes": 2837,
+      "sha256": "261d8145c9be1f42fef1daa13ec63a4cb3e12ba81befe4d93f517155009bbf18",
+      "git_blob_sha1": "c0a19dd2e4018c0b702984d8d9d3181d06e5b5b2"
+    },
+    {
+      "path": "model/central-campus/references/campus-aerial.jpg",
+      "bytes": 12635051,
+      "sha256": "1c0d935403e643889873e06439b1f4d26a536eea4af673321a993ca71fbb60d5",
+      "git_blob_sha1": "c8445a94d95eea94a72b1470682183c61be669a8"
+    },
+    {
+      "path": "model/central-campus/references/lake-photo.jpg",
+      "bytes": 64370,
+      "sha256": "4f46d976823318408589519f44a5077c68fb4fde82d88f74dc9bbe2daca508a5",
+      "git_blob_sha1": "4b8d1771d447642720b8facb40a08befc1297166"
+    },
+    {
+      "path": "model/central-campus/references/satellite-export.json",
+      "bytes": 421,
+      "sha256": "438a664f9363d783548c89fd5e696307aa8481acf2473114321af16158c3d6a9",
+      "git_blob_sha1": "49bf7e2c84b18b30d75d509e0079580c9c063827"
+    },
+    {
+      "path": "model/central-campus/references/satellite.jpg",
+      "bytes": 571038,
+      "sha256": "9ec90612031c2a039eb433c278fd4fb7dbfc62b0cf2907557d363b066a52c640",
+      "git_blob_sha1": "9e66d1ea2efc832140ba57da92c28496f27d9dea"
+    },
+    {
+      "path": "model/central-campus/references/teach6.jpg",
+      "bytes": 155964,
+      "sha256": "b5057c42b21a4e8b4b8089c6df28546fe8b9050fd1714ad20c80b2616473e182",
+      "git_blob_sha1": "071fea92741c387171ffbf5919487d833d808875"
+    },
+    {
+      "path": "model/central-campus/teach6-detail.png",
+      "bytes": 5697035,
+      "sha256": "7314208b7dd249719399205d11a3db1d29bf1ecc9315d396452a19f1a1412099",
+      "git_blob_sha1": "3bc4496022abaff935fa3cbd0b471de27433e164"
+    },
+    {
+      "path": "model/central-campus/validate.py",
+      "bytes": 2397,
+      "sha256": "9a93252dee5a9361237684fc45b3a935d697f0b0f941afe60eec30c1683bbb75",
+      "git_blob_sha1": "cb49d13a61e47117eada06d52e65e9d4a7c3a251"
+    },
+    {
+      "path": "model/central-campus/validation.json",
+      "bytes": 2342,
+      "sha256": "cec0c647b323ea0f67355bcf2492842087c586af796fd9fdaf5dcdac85dd3b9a",
+      "git_blob_sha1": "414b85d10d89ff7a2e7216c747fb5095a5903cc2"
+    },
+    {
+      "path": "model/study/README.md",
+      "bytes": 5033,
+      "sha256": "55f907605463978bdc48e212a7540b62180042bcb1b5a7361fb9ad351321399a",
+      "git_blob_sha1": "7a9e7e1b99c1c71f0d18ef16cdecc8fe062c7722"
+    },
+    {
+      "path": "model/study/build.py",
+      "bytes": 39405,
+      "sha256": "c51bf11cede32efb09dab074e55d32a336f2c6e686e6f86d52665108280e48f4",
+      "git_blob_sha1": "3686c89548e70ed3b46579fd7be7041094ac20a0"
+    },
+    {
+      "path": "model/study/campus.blend",
+      "bytes": 21044433,
+      "sha256": "9fc3c3de083167bc015931b953e0569869621cd449f6a25a5edc927fc275ce8a",
+      "git_blob_sha1": "09fb91f00bcd99a22ae796f7da5085e35b3b90c0"
+    },
+    {
+      "path": "model/study/campus.png",
+      "bytes": 14902915,
+      "sha256": "8017c6a60eb2b9f237c5c5c9d5b41732512fbc49be104085dac8379b77c4e1a1",
+      "git_blob_sha1": "a9a22c7f84e390abd9b6948191bf71d2907ecbfe"
+    },
+    {
+      "path": "model/study/manifest.json",
+      "bytes": 300005,
+      "sha256": "bb01705118e3019aa084b016164dda890789fc735fcddfd40f39ac0937003401",
+      "git_blob_sha1": "86485e6f9b2f342cb0202c697270b74085894f0c"
+    },
+    {
+      "path": "output/garden-pilot.json",
+      "bytes": 5533,
+      "sha256": "7921be85250b2973466cdb29496e6802fca4d763583abeebed3d8ec557b6dcc6",
+      "git_blob_sha1": "896c94b209ea46a3edd38aa13e3129912bc875d5"
+    },
+    {
+      "path": "output/garden-pilot.webp",
+      "bytes": 727162,
+      "sha256": "6ddbd8c693bf8c9f056ff65f28c5c7527f6f559df00753d7b3f938bb54fbb1e8",
+      "git_blob_sha1": "94bdd64e2f1f6700faf7798907ed57c84dde885d"
+    },
+    {
+      "path": "output/garden-tree-canopy.png",
+      "bytes": 2817221,
+      "sha256": "cc2eaf3dc78bee167e20621e23496e5ae216351e774c528ab9556941ee04b615",
+      "git_blob_sha1": "38a9dd76c341cd7a691738d33ca58692c97672ec"
+    },
+    {
+      "path": "output/north-pilot-before.webp",
+      "bytes": 356636,
+      "sha256": "2fb78784c0c51f59686b9d6b1bb647ab6cfdabfb33b39d374b873ba14484633c",
+      "git_blob_sha1": "1120785e08b24024da644c32692c163313b269b9"
+    },
+    {
+      "path": "output/north-pilot.json",
+      "bytes": 338319,
+      "sha256": "2cec9f6630e01093c926638b9a5e4d49f048a1b003014d2113b3c4d07d3620e5",
+      "git_blob_sha1": "9061b4a7f5c554242856b9b5f038045cf21c544c"
+    },
+    {
+      "path": "output/north-pilot.webp",
+      "bytes": 840142,
+      "sha256": "09ef35355a7939f58beff0d98e3d791ba14d3d27d9ccb30c21b5f5bdfd7da130",
+      "git_blob_sha1": "2864806d942365dd6e2481505fe357a66b1f2da4"
+    },
+    {
+      "path": "output/playwright/atlas-building-mobile.png",
+      "bytes": 273490,
+      "sha256": "5f9c4ff3f745a60eb075babb8a88628312596738c7134d0b07ece4e92dd77a1d",
+      "git_blob_sha1": "90348ca738b863d6c36093e45db6d6ac056b4490"
+    },
+    {
+      "path": "output/playwright/atlas-facade-depth-desktop.png",
+      "bytes": 795439,
+      "sha256": "bdc759fc37f2a50765b18031528539ac7d9d37599222610536af46c7a0c61f63",
+      "git_blob_sha1": "9337b17fda96bca642483b39c89234b5eed894c1"
+    },
+    {
+      "path": "output/playwright/atlas-garden-pond-desktop.png",
+      "bytes": 924654,
+      "sha256": "1f32a5fe161d3c0d26f422e0698bfbb540b7bb8d5400b6f4f8d843d0e2e2085c",
+      "git_blob_sha1": "b28a38a1ef666158abdbd082da20360a9699d70b"
+    },
+    {
+      "path": "output/playwright/atlas-garden-shrubs-desktop.png",
+      "bytes": 937026,
+      "sha256": "5d4d416eab35d776ce02aa8af8064ed203aff1a3b5256a4fb59ae2841f329573",
+      "git_blob_sha1": "50ee578abe8c1c5f06978bb3b21b25075525466f"
+    },
+    {
+      "path": "output/playwright/atlas-map-desktop.png",
+      "bytes": 1093391,
+      "sha256": "e780f6552c01116a1fb1804a245e5d048c19b08abb66d25d8ef2625a11c4ef4f",
+      "git_blob_sha1": "de26d6d4ad82d743811fdcacc1da786f276848b5"
+    },
+    {
+      "path": "output/playwright/atlas-map-mobile.png",
+      "bytes": 395798,
+      "sha256": "3be2d5dbe33e19375e2777840b8f5eca71aed75c9ea4ad6f7bf52dfc5b751b96",
+      "git_blob_sha1": "e37ca807cd4ce81c1ca79a902bbcc978640c72ab"
+    },
+    {
+      "path": "output/playwright/atlas-overview-desktop.png",
+      "bytes": 717487,
+      "sha256": "6295768e541d856e074b53b11b08775b0749e87b1f5e25c51456a2c980209f7e",
+      "git_blob_sha1": "5cfff3718b7a2cd70af4af4e02238819bc41c820"
+    },
+    {
+      "path": "output/playwright/atlas-overview-mobile.png",
+      "bytes": 132466,
+      "sha256": "6106c1ca2c7d19d3bf8cf9841499d2fad8c65429adedba91f9a84abf59e9b7f9",
+      "git_blob_sha1": "a2a8aa0425a76eebc8b0c93758e2d68c4fb90ada"
+    },
+    {
+      "path": "output/playwright/atlas-pitch-desktop.png",
+      "bytes": 959303,
+      "sha256": "cdaf543224c5b828372d904b6d44b85edcb02d7f589ca17e9c0bb8f48dfe901e",
+      "git_blob_sha1": "f46142048acbc2c422283343ac8fa1fadf795f10"
+    },
+    {
+      "path": "output/playwright/atlas-services-before.png",
+      "bytes": 1148706,
+      "sha256": "4053f654a7ddc9b0ef4d0b01a69f93159985b26bce0942653bef8b754e5b4580",
+      "git_blob_sha1": "d0004670c2f375cf7eafb4c14cd19556afe6aebc"
+    },
+    {
+      "path": "output/playwright/atlas-services-dining.png",
+      "bytes": 1297186,
+      "sha256": "41703e8be312b9153e653c7cbd484830d4759462b04600e034f57d628648feb0",
+      "git_blob_sha1": "8a312098d99f659d1e3dc99394c61729cb0625d4"
+    },
+    {
+      "path": "output/playwright/atlas-services-gate.png",
+      "bytes": 947795,
+      "sha256": "313bcf1c4e1efe9d27d517c33c300c65eec48d83de9cf996ef4abd57cb7e777b",
+      "git_blob_sha1": "c55e8b7c388140cf3c7580bb58aeb239e16f2fb7"
+    },
+    {
+      "path": "output/playwright/atlas-services-mobile-320.png",
+      "bytes": 182451,
+      "sha256": "5d673d73c183f2e74c2bcd1933fdd2e264290f8afe29a61a475cc3d1c2cbea07",
+      "git_blob_sha1": "adc67fad76c677a0a09087a18c4092938c65d371"
+    },
+    {
+      "path": "output/playwright/atlas-services-mobile-390.png",
+      "bytes": 247802,
+      "sha256": "cb9356f83e546b28bd0c1caba75e7b6a0d04965687f4962dff0cdf81fb67664e",
+      "git_blob_sha1": "3b7e62abba9e78dfbc675fb0cecb813ec73baf99"
+    },
+    {
+      "path": "output/playwright/atlas-services-mobile-844.png",
+      "bytes": 252903,
+      "sha256": "d2be04675238348a5e0a54bd47d8627804f87bba4fae420fa670911ad84db83e",
+      "git_blob_sha1": "2daa4823d70301d29a486b1312e55fa637370052"
+    },
+    {
+      "path": "output/playwright/atlas-services-mobile-gate.png",
+      "bytes": 159670,
+      "sha256": "643632afab76cef13001b57a7edd4b7d77db0d16061abfde60c177f8e1e86677",
+      "git_blob_sha1": "33c0c6cca37e8152b893a2eebb16e747407a8be0"
+    },
+    {
+      "path": "output/playwright/atlas-services-mobile-track.png",
+      "bytes": 336038,
+      "sha256": "60c59ace53c2d8737b51dece40e580cf54bade2827f389dd55e72797949a05ae",
+      "git_blob_sha1": "0a3b9ed00cf450d8371a5c768ce694382e8e2a25"
+    },
+    {
+      "path": "output/playwright/atlas-services-overview.png",
+      "bytes": 702195,
+      "sha256": "e44e62edf99449f90089dfade18804a32819704aa49f421192a5a0ca0b2eb573",
+      "git_blob_sha1": "deddf48ed38d487784feded91ea65e9888e5d935"
+    },
+    {
+      "path": "output/playwright/atlas-services-satellite-1280.png",
+      "bytes": 1152781,
+      "sha256": "6acdbe3db8ae2e8a46d3ec2f56f4056c477450ad373e14f75d740cc26fcf8ffd",
+      "git_blob_sha1": "46e7e9bb60d663796ab993f8bb7f2b8c0ba18a5e"
+    },
+    {
+      "path": "output/playwright/atlas-services-satellite-390.png",
+      "bytes": 303984,
+      "sha256": "9ec62758b8d489aa78066cbc4057ce244a9dbbfb98cf048b4ccb0ba59851904a",
+      "git_blob_sha1": "651fea6f1ee65a7430c1e20ed20ca4f30206c5fd"
+    },
+    {
+      "path": "output/playwright/atlas-services-track.png",
+      "bytes": 862088,
+      "sha256": "0036ce60cf1fa70abcc87684405aa7fc219a8af5de19e9fa0839224af3573852",
+      "git_blob_sha1": "742ec2914f70dceb841de64045e9a391779cc20e"
+    },
+    {
+      "path": "output/playwright/atlas-services.json",
+      "bytes": 29386,
+      "sha256": "ccd62e5e687a63a8f7f6a9e5309fa3a288b4da686b45467514e24018b43499cd",
+      "git_blob_sha1": "2057a09970df3871084db63ad90ae29206aed4ed"
+    },
+    {
+      "path": "output/playwright/atlas-services.md",
+      "bytes": 5246,
+      "sha256": "0e8291dbbddc0372d541d5f983b7a42e6c437166fbe86adae66483723fbe85c2",
+      "git_blob_sha1": "1c1dd564c016be62a306922dedd15e4015e4b176"
+    },
+    {
+      "path": "output/playwright/atlas-source-ground-b06-mobile.png",
+      "bytes": 290156,
+      "sha256": "b6e3fe94529cd8f8d238d6ec48e5167fc7e286681071d42e113f2a9143cf8e0c",
+      "git_blob_sha1": "7a92a9e113f3fdba602e4b7f22ca92f32de6c142"
+    },
+    {
+      "path": "output/playwright/atlas-source-ground-desktop.png",
+      "bytes": 711695,
+      "sha256": "e7692b156074159c5807c1a74296d91fc292ce0be73dc30d592acef3c5b4075f",
+      "git_blob_sha1": "f7aad96e886c039d3744cf9ae2ec6bc2446de2f4"
+    },
+    {
+      "path": "output/playwright/atlas-source-ground-mobile.png",
+      "bytes": 301944,
+      "sha256": "9ee9fcc8258756eb6643640c4c1b7711ee0f55ef60243cc938ce67c09054c28f",
+      "git_blob_sha1": "56e8f5432f8f8b3a03c0ec4498ff4fab52828772"
+    },
+    {
+      "path": "output/playwright/atlas-source-ground-overview.png",
+      "bytes": 931247,
+      "sha256": "a58e18b9e697fc1f5a9695bcf1a143f256f1a89923bee0e39983a3ba355de417",
+      "git_blob_sha1": "fb7b34d24897308b9c1df0bf3f460c4ed7c0295c"
+    },
+    {
+      "path": "output/playwright/atlas-south-desktop.png",
+      "bytes": 1229983,
+      "sha256": "7ea7723a74a2c6e8d9013771e2215811b66fd947ead5888151a3403f8a2bed48",
+      "git_blob_sha1": "c5e6cd835b53451da8e85083c66fea9a91244db9"
+    },
+    {
+      "path": "output/playwright/campus-plan-mobile.png",
+      "bytes": 170364,
+      "sha256": "81a55334ff4168471552ca4c898e8ac51c6088cb6b77c7f4fadaaf2491cff90a",
+      "git_blob_sha1": "8b68fa9eab0321326d5cd522795abe3802850b04"
+    },
+    {
+      "path": "output/playwright/campus-satellite-clean.png",
+      "bytes": 1776879,
+      "sha256": "46c5756a4b30f28f8ac84730367c6848997d56511f566d03d685646fbf8df6a1",
+      "git_blob_sha1": "4e147e3d62a0be5fe115dc062de1f170ea9b05d5"
+    },
+    {
+      "path": "output/playwright/campus-satellite-desktop.png",
+      "bytes": 1535057,
+      "sha256": "bef15377f93134f980a155d208fcd2a7923e317ee002f7617e83eb0145b7faf4",
+      "git_blob_sha1": "6595a72779a3ac7b2580a356a7fab15d36a416a0"
+    },
+    {
+      "path": "output/playwright/campus-satellite-mobile.png",
+      "bytes": 261675,
+      "sha256": "1c73ad88361664d970b76105eddf5c9fa72777268eee56fbe5a0e68679a7a1d0",
+      "git_blob_sha1": "0532d35926c68876dc597081831a5eead57eab97"
+    },
+    {
+      "path": "output/playwright/campus-vr-real-view.png",
+      "bytes": 1334935,
+      "sha256": "c6294fab3c7877684b2afac8be8940e52aff2bd22bc05087c63674075551e8bb",
+      "git_blob_sha1": "315ff6040935ecd57f1acc27b665f14af35f700e"
+    },
+    {
+      "path": "output/playwright/desktop-initial.png",
+      "bytes": 447683,
+      "sha256": "12e7f886abbc5fe2e12e467141a48f148f140e2f956df44da4bcf4e28e40f818",
+      "git_blob_sha1": "c595fb2788c8192ae21776ffe0fa4bae22ceb175"
+    },
+    {
+      "path": "output/playwright/desktop-route.png",
+      "bytes": 453920,
+      "sha256": "d0802db4749389d8cfcdbf0e10aa85dde8dbe6275fc0bb4ca5860a20e43aa722",
+      "git_blob_sha1": "ecaf30b5ebf273a895424abeeb6e3f141d583788"
+    },
+    {
+      "path": "output/playwright/landscape-comparison.webp",
+      "bytes": 292140,
+      "sha256": "60efa3a49059918e025384e620edbd969499220937c4b06b797da45ae192b8da",
+      "git_blob_sha1": "9d434528644d97789d4c62b501ecd037eb282fe4"
+    },
+    {
+      "path": "output/playwright/landscape-dining.png",
+      "bytes": 1300422,
+      "sha256": "6ebaa31f36a02a359939b2f863fb9a02d1dd14d9e4f2f7da15f9244bce4b256b",
+      "git_blob_sha1": "c68b333e4b87b98ce2d491c817670370a82823c8"
+    },
+    {
+      "path": "output/playwright/landscape-east-rows.png",
+      "bytes": 1000065,
+      "sha256": "d5ae041af3819417476b4abbe99b8a2d0a64f055eef95930b64d66ddeba559cc",
+      "git_blob_sha1": "219f25d48692ae8b4df28d1d5800ae34d3113c27"
+    },
+    {
+      "path": "output/playwright/landscape-facade-extension.jpg",
+      "bytes": 203138,
+      "sha256": "1b46e187cb96d4c766720b460cd3acc0cf39f0b8a7968e371e57ec78d05cb5af",
+      "git_blob_sha1": "70fd635337454e93d31e2a682ff91078ebdd1ecb"
+    },
+    {
+      "path": "output/playwright/landscape-facade-middle.jpg",
+      "bytes": 157421,
+      "sha256": "24ab0fcc6fb835e03754d1393d618ba48215e0f3378956ce3a43ed5bf0b6a8e1",
+      "git_blob_sha1": "401c869c66d759c8f8c706f0a3fd227ad92c2553"
+    },
+    {
+      "path": "output/playwright/landscape-formal-beds.png",
+      "bytes": 975292,
+      "sha256": "940ff2b1f56c9aa91999e1d2a08123b0e9605c6c46834e5a4a0478ad25426fd8",
+      "git_blob_sha1": "c458adc7d2b8b60a763e0c67009e63b784a91da9"
+    },
+    {
+      "path": "output/playwright/landscape-formal-court.png",
+      "bytes": 973254,
+      "sha256": "08b774984530f70464275bf91601918240d51d538c7de43b977aefe630d22e18",
+      "git_blob_sha1": "4115c73b64c4aad34a8b16a38dd6d801faf678d4"
+    },
+    {
+      "path": "output/playwright/landscape-island.png",
+      "bytes": 1035063,
+      "sha256": "6aa118937cdcc59f0e5325c524ec1be5fed70d10197d8e15d38cf5eb911115b4",
+      "git_blob_sha1": "1e8cf1c4ef575aef297686e940f10ec5ec24cf76"
+    },
+    {
+      "path": "output/playwright/landscape-middle-court.png",
+      "bytes": 805988,
+      "sha256": "89cad60c18e59a03cbcc3c57cc36dfd6540fd972d7688d50e8b25ad775fb929f",
+      "git_blob_sha1": "790bd071cb845f65d570012cb206efbb1e3b0d08"
+    },
+    {
+      "path": "output/playwright/landscape-mobile.png",
+      "bytes": 262918,
+      "sha256": "3d8739744aef0051c5be53d6d165a1e0547093c44931c0aa1ff437d178abb9c9",
+      "git_blob_sha1": "9af31da37de09179b6cae9f6542b649a8d4d18ca"
+    },
+    {
+      "path": "output/playwright/landscape-north-court.png",
+      "bytes": 918758,
+      "sha256": "4dc2692e9ffa6a6fcd2bdf218546e45f517ef610580f36bfaa2c52ba9df4a5cd",
+      "git_blob_sha1": "259fb42c1db5e1a55017df2dea522ffe2f52cce9"
+    },
+    {
+      "path": "output/playwright/landscape-overview.png",
+      "bytes": 718211,
+      "sha256": "6df116e5e78b14659ce40739bc33bac127eade4de2de306a12f72980323429e0",
+      "git_blob_sha1": "b66d14658c4b97bac8a25c287e13c6bf0e3a0d2f"
+    },
+    {
+      "path": "output/playwright/landscape-planting-north.jpg",
+      "bytes": 175098,
+      "sha256": "da611e1df82a45d957da7a0587a001faf1fd299048f8bbeb377e6fd5e3d4b1c8",
+      "git_blob_sha1": "c6c3fa5f684b69371357ceab911aa5493b3decf4"
+    },
+    {
+      "path": "output/playwright/landscape-south.png",
+      "bytes": 1241046,
+      "sha256": "fab2aa38b1aeccfbb202300cdeaa5d6f03a7125b948cd8a88d5ed86d9cb2cf5a",
+      "git_blob_sha1": "5b64d2e932f1ebd5ad297968c5dea5460fe725cd"
+    },
+    {
+      "path": "output/playwright/landscape.json",
+      "bytes": 94466,
+      "sha256": "a7c9ddfc9717452fa57f7c41e2e507f0a2ed19111f01e12d30d9112c536ec361",
+      "git_blob_sha1": "7e2eee47905c6fa56009e16921bfef2e2291e5fc"
+    },
+    {
+      "path": "output/playwright/landscape.md",
+      "bytes": 9689,
+      "sha256": "02317bd0784108db4c3531e2f13b036fb644c883875b88adb1fa0679ccefcbbf",
+      "git_blob_sha1": "4f3316350641bde1beb92b156b8c3c47eb8ce435"
+    },
+    {
+      "path": "output/playwright/library-direct-vr.png",
+      "bytes": 1431408,
+      "sha256": "f6e6e619a8e82ccc1229d0d2d89eab99ad0ef4041e6511ec5ea4b893f026afed",
+      "git_blob_sha1": "7eae2948c17ec86d7a945246b553eb65baf7f7f8"
+    },
+    {
+      "path": "output/playwright/mobile-initial-fixed.png",
+      "bytes": 126218,
+      "sha256": "ac33da06c5ec5cc80e07d016cac720ded95c5c715f086761c2d00da95306373d",
+      "git_blob_sha1": "57050c05eecb2cb7f3830cd96b062b44b95fec42"
+    },
+    {
+      "path": "output/playwright/mobile-initial.png",
+      "bytes": 172577,
+      "sha256": "0905c21c4614030d56b5afc2062b9c61206af15452d13f70c42656c545c93f12",
+      "git_blob_sha1": "7971a69f467f49e1601792295c10816d25f6fd13"
+    },
+    {
+      "path": "output/playwright/mobile-route-final.png",
+      "bytes": 136582,
+      "sha256": "2e845dee1736275e36abbab59662d019ca46833d0da5e5a64a00e0af01f11edd",
+      "git_blob_sha1": "b9f42673700da9892fb9fc01e58f4baf14c2ce5f"
+    },
+    {
+      "path": "output/playwright/mobile-route.png",
+      "bytes": 129963,
+      "sha256": "4bcea9d5778fc7d8064ba20b92580d8d6bdfcbc4c8f91b49f4602df6a0f187ea",
+      "git_blob_sha1": "0ac63679edfc78654cbc50fe29ba31b98abfab5d"
+    },
+    {
+      "path": "output/playwright/north-web-desktop.png",
+      "bytes": 1094086,
+      "sha256": "7f6331c09e2dd7862476e4cf4bb1973e76784aa82fa5f8e857789036e72aad5b",
+      "git_blob_sha1": "e7cd8250112e5deb79ddcfc0c5348972d9a1ea90"
+    },
+    {
+      "path": "output/playwright/north-web-focus.png",
+      "bytes": 1489309,
+      "sha256": "30ab505ca1106f21ddb6d3cce557583e3d9fafa13335b77f9d502bb1d3038930",
+      "git_blob_sha1": "e6f4bd741e95842bfb1341e6e3a5ec4793e6cfcb"
+    },
+    {
+      "path": "output/playwright/north-web-n34-mobile.png",
+      "bytes": 226225,
+      "sha256": "127886fcf301e142098118776c95702cde23efd4e622bedf26236366bedb689f",
+      "git_blob_sha1": "31e6959f64eaae715977bfd4fe9d2e392188a7ef"
+    },
+    {
+      "path": "output/playwright/north-web-overview.png",
+      "bytes": 917329,
+      "sha256": "c593fa7194663dc4af9f20e2a210124b6a493a2870400a338bc0efb5bfe1ac8a",
+      "git_blob_sha1": "eb4076620908f361e8ba90dd48090d984689690d"
+    },
+    {
+      "path": "output/playwright/real-map-campus-layer.png",
+      "bytes": 159742,
+      "sha256": "964ae876ee8bdf7e786e84429bb1fa3d7eefdf9544641cc29984da19ba1b872c",
+      "git_blob_sha1": "66657f69b69d777e5a8406f450eae77e39391866"
+    },
+    {
+      "path": "output/playwright/real-map-desktop-controls.png",
+      "bytes": 625076,
+      "sha256": "bc04eb8c60260fa7d28bf6147b9be15fefefa998ddd8c576f5e0561098f34510",
+      "git_blob_sha1": "1a17fbcaff0a0fee2ae31b8682645b88b70c01a1"
+    },
+    {
+      "path": "output/playwright/real-map-desktop.png",
+      "bytes": 622666,
+      "sha256": "b340a455e3c44f7579fd1b96a5f7c5a3571ef6f120d080a42149599c901ab09a",
+      "git_blob_sha1": "a06bae2cf4fe34020eb2959499ea0d287984e5e7"
+    },
+    {
+      "path": "output/playwright/real-map-mobile-reload.png",
+      "bytes": 194543,
+      "sha256": "e128a1e73996f97882f63bc0bcd701ee9aaeec71ebd26ce7af18696fa0b84396",
+      "git_blob_sha1": "cd4647d2d28e389f0f648a58c0d468ca6a9b0c94"
+    },
+    {
+      "path": "output/playwright/real-map-mobile-route.png",
+      "bytes": 152780,
+      "sha256": "d3329c20e11b1acd588afbd45167d5c0ea807044a8c11467b68dc358aacbbb7d",
+      "git_blob_sha1": "5a94ed505bbd00ff312907bd9e028850d884aa18"
+    },
+    {
+      "path": "output/playwright/real-map-mobile.png",
+      "bytes": 166434,
+      "sha256": "200a96418a4d454d45423e70ebcbe984f7b8f346e3ce64595f2ee2e9115638c9",
+      "git_blob_sha1": "dd84cc6f3cee0c640c9cab6340e9d5a3f71b5010"
+    },
+    {
+      "path": "output/playwright/whut-reference-campus.png",
+      "bytes": 225563,
+      "sha256": "9d0b8a284c86c40f1a628f890d7e8eccf24f6ec84363822349632271a6d7f4dd",
+      "git_blob_sha1": "668c7a437210245bcbab312d35dedede85309c5a"
+    },
+    {
+      "path": "output/playwright/whut-reference-category.png",
+      "bytes": 250087,
+      "sha256": "1ddfa1da42b31249d2a129ec4dbef5264c79724df340187da3bf70b24920e74f",
+      "git_blob_sha1": "0bf35c1f97f65c580856d9ee70868ac2387b325c"
+    },
+    {
+      "path": "output/playwright/whut-reference-detail.png",
+      "bytes": 245319,
+      "sha256": "d8f789b2a6132754edcbb5478e174e15dc168eb98d0ed257c595720f3fe35eb8",
+      "git_blob_sha1": "50323432a3b07a11d82f9b637034d53ce5a09421"
+    },
+    {
+      "path": "output/playwright/whut-reference-overview.png",
+      "bytes": 266028,
+      "sha256": "8df2579f835371599c63b8a94e41d8c5839ae86d897af4c2dfeb18f6aef70c9a",
+      "git_blob_sha1": "9cea9fe752b51f05e90cf88452e89637bf46b792"
+    },
+    {
+      "path": "output/playwright/whut-reference-search.png",
+      "bytes": 229884,
+      "sha256": "c7d65ddb82d4f300bfbe261664761339c21cf3db41a795e17995a64bc673117d",
+      "git_blob_sha1": "3013dd7b90c3e99807fea52cac3018c4808d6d79"
+    },
+    {
+      "path": "output/playwright/whut-reference-zoom.png",
+      "bytes": 253104,
+      "sha256": "72bf774ab42d7b37cae71df3a5d73842ddfbd0aad14c2007208eef25616f8bb4",
+      "git_blob_sha1": "b00f0ec2c506af1e2393da414230df7cdf00ab4a"
+    },
+    {
+      "path": "output/playwright/whut-reference.json",
+      "bytes": 4245,
+      "sha256": "a18819231cd2f15e15253e691e82a9ea469b49e8312902afec7e8b130f2a365c",
+      "git_blob_sha1": "897d01f4e74413f51f43fa050646e9571cb0d569"
+    },
+    {
+      "path": "output/playwright/whut-reference.md",
+      "bytes": 3114,
+      "sha256": "6b8cc007c1a370fa54c1336ff769c0ba5ac2025fe2bce2e0e056ae1ecddd551c",
+      "git_blob_sha1": "f0cea9786204d0586d751b7833494b39e2186250"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 28187,
+      "sha256": "3b6d49ff1f0267560fd041713a5861490fa02d79cec39d9044b72dd295302740",
+      "git_blob_sha1": "778d6ff73af084c1cf1db3ae1e49ddf9265f488b"
+    },
+    {
+      "path": "package.json",
+      "bytes": 480,
+      "sha256": "6aece9c7ff163b77c2303a526dfd3a76ac55ac58a601e702914d6891bdd594a2",
+      "git_blob_sha1": "cba48cffaf0606677afb00c49650e5a94cef76b5"
+    },
+    {
+      "path": "public/assets/campus-3d-v2.png",
+      "bytes": 2261249,
+      "sha256": "ea9b7584fb3915e22868e794f8b2bc2a0cad564027605687e9c5bf6da43d0739",
+      "git_blob_sha1": "209e0ec412f77d9089816aa7c67187b86f7f5ddb"
+    },
+    {
+      "path": "public/assets/campus-3d-v3.png",
+      "bytes": 2034080,
+      "sha256": "4c4322c5380d7e06339b873aa1c3592af07b3c1f608f23562cf895a427697852",
+      "git_blob_sha1": "61e9ce43d006f6552ed0f5aa851a894719c7d5fb"
+    },
+    {
+      "path": "public/assets/campus-3d-v4.png",
+      "bytes": 3246511,
+      "sha256": "4ef0aecd2653f8a7dec75e8b49d25b1fc4eeab55c188c624f2c1b55d7fef53fc",
+      "git_blob_sha1": "ba96eb2ceee79245ff40a9f804896ea89defa3c0"
+    },
+    {
+      "path": "public/assets/campus-3d-v5.png",
+      "bytes": 3264529,
+      "sha256": "22b10b9a42669a9e15bc0016f95c2f72aea3e69687352eae22ef9ce5719fd104",
+      "git_blob_sha1": "af9e57e37eac41c0c33479adfd1fa53db325fa3b"
+    },
+    {
+      "path": "public/assets/campus-3d-v6.png",
+      "bytes": 3156456,
+      "sha256": "27de38fb20d3f339f4d939c1f17bc25e215373aa4b9ce89e363c6626f5daf702",
+      "git_blob_sha1": "92e7151c9488f205ad22866f776efbccfa9abb8c"
+    },
+    {
+      "path": "public/assets/campus-3d-v7-hd.webp",
+      "bytes": 1988380,
+      "sha256": "7567bb4aaf11c2dd7fdc384200bc320f383ab218fa5fe4aa9a92605ac1557b67",
+      "git_blob_sha1": "f77d2ef00e18b4ead3f693b57b28bc1bd777d77b"
+    },
+    {
+      "path": "public/assets/campus-3d.png",
+      "bytes": 3236166,
+      "sha256": "cbe405b7d31363fe04e5b9a0e062ac952ba9910cd694922218e286ff97453168",
+      "git_blob_sha1": "14d6be625b4ac5196a3b2c829b014dca18f7f408"
+    },
+    {
+      "path": "public/assets/campus-atlas.json",
+      "bytes": 1560026,
+      "sha256": "41af7f58aa92d74c16573fe40e98ca92ce80f773f47953b22f7a826701eb9a0e",
+      "git_blob_sha1": "46547e5e58d9ea19003066a8e02823637511a409"
+    },
+    {
+      "path": "public/assets/campus-atlas.webp",
+      "bytes": 2388494,
+      "sha256": "a134c21a52be666ca5a4ef92d637d3fbef8498d0577ef0981199d13e1ef4bece",
+      "git_blob_sha1": "ecc1e7d930e106025d80ced1e810d771437d6199"
+    },
+    {
+      "path": "public/assets/campus-lake.json",
+      "bytes": 54174,
+      "sha256": "1ffa2ad2a158ca1e59c2887bc7995afd47aa8de87490899a61fe4bf872ccfde1",
+      "git_blob_sha1": "46e7dda211be09efa230967c853e45c6fcc78d5e"
+    },
+    {
+      "path": "public/assets/campus-lake.webp",
+      "bytes": 692048,
+      "sha256": "da8c3e07b5b5b447c078e8a2d6d33658b1a42bfa3712748cd79fa9e44b2f667e",
+      "git_blob_sha1": "0478b0fa5c94325e0468b6ab3d0e4a744288ecf4"
+    },
+    {
+      "path": "public/assets/campus-map.jpg",
+      "bytes": 155401,
+      "sha256": "bbdcd8658020cb4d1dfec470fa77006043cfec19d288db1bb7713552ecf91f05",
+      "git_blob_sha1": "1a533b4b9144acbe52637f4e93382bb440fa3eb2"
+    },
+    {
+      "path": "public/assets/campus-north-before.webp",
+      "bytes": 356636,
+      "sha256": "2fb78784c0c51f59686b9d6b1bb647ab6cfdabfb33b39d374b873ba14484633c",
+      "git_blob_sha1": "1120785e08b24024da644c32692c163313b269b9"
+    },
+    {
+      "path": "public/assets/campus-north.json",
+      "bytes": 340091,
+      "sha256": "b02f05d66f7d2d2a213e881cbf248371e70037a94baeb21a2d5ae7842ff24725",
+      "git_blob_sha1": "783fad09d278d39b18d8c2c7fdd7152ad450b67d"
+    },
+    {
+      "path": "public/assets/campus-north.webp",
+      "bytes": 840142,
+      "sha256": "09ef35355a7939f58beff0d98e3d791ba14d3d27d9ccb30c21b5f5bdfd7da130",
+      "git_blob_sha1": "2864806d942365dd6e2481505fe357a66b1f2da4"
+    },
+    {
+      "path": "public/assets/campus-reference.webp",
+      "bytes": 386126,
+      "sha256": "71b5321f48967b792b6d51bbd5dcef0810d1f8be23206d584da1a660a7051cea",
+      "git_blob_sha1": "a79c63530207209bcf2861432598cdd25df2fd5f"
+    },
+    {
+      "path": "public/assets/campus-study.json",
+      "bytes": 482141,
+      "sha256": "3d49e6fe3283b7280c8accb9b60f8f7040646e2e5324d272de0e2e4cc9092028",
+      "git_blob_sha1": "8f8a6ebd0aa4d9c1925d30a042920ed02512e9b9"
+    },
+    {
+      "path": "public/assets/campus-study.webp",
+      "bytes": 1000292,
+      "sha256": "eeb3c75155bce3133ac417f16e20fc319bf97cd8d6549c4b3fc8a61c33a025e1",
+      "git_blob_sha1": "18e3df65371cd3b9305f258c20338b4995913385"
+    },
+    {
+      "path": "public/assets/draco/draco_decoder.wasm",
+      "bytes": 192420,
+      "sha256": "a680d927bed9cb864ddbd63521868891af2bfbe755092761b4837487618df8ac",
+      "git_blob_sha1": "469904ebcb7b83523db73913a19c349528105ff8"
+    },
+    {
+      "path": "public/assets/draco/draco_wasm_wrapper.js",
+      "bytes": 58456,
+      "sha256": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6",
+      "git_blob_sha1": "43f15568384c84f9506cd86fc4a8736e1ba2ec1f"
+    },
+    {
+      "path": "scripts/campus_atlas.py",
+      "bytes": 33110,
+      "sha256": "c1428a2a8f1670536c55fd79040e66751a3bc17a27a9a6c00824996ef6fc5e42",
+      "git_blob_sha1": "f5c523f537d116ac9b51b7a8962a6027569f90be"
+    },
+    {
+      "path": "scripts/campus_expansion.py",
+      "bytes": 167847,
+      "sha256": "78e0bb9e26ae795404a34fe19c8736a2cd33deeb268ede2e9085085188572569",
+      "git_blob_sha1": "4f50912b23869a624f194f885d465baec257faad"
+    },
+    {
+      "path": "scripts/campus_expansion_export.py",
+      "bytes": 11402,
+      "sha256": "469b676a61086937e086430a0dbfb7abba8e6b7a192407af77b54ebaabdb33a1",
+      "git_blob_sha1": "effdb5bc2f853bf83f3b210ccdcc35455df6a480"
+    },
+    {
+      "path": "scripts/campus_study.py",
+      "bytes": 32947,
+      "sha256": "e662d7882f4af8555945d4009c34aea2d74088bcba883f1684026070f1c14c3f",
+      "git_blob_sha1": "5cccef8b105be28b37f6a4443284f36c77043991"
+    },
+    {
+      "path": "scripts/canopy_volume.py",
+      "bytes": 22617,
+      "sha256": "05d0e8aa655a3dcc6265ced04a0b2dcf4f0a66bcc9a0ca11aa4347fd4ded2631",
+      "git_blob_sha1": "3c2757bb5dd95a092494bbd6281dd9e5940fca59"
+    },
+    {
+      "path": "scripts/courtyard_finish.py",
+      "bytes": 17889,
+      "sha256": "51c5eef21fb9282cea9ae450f88f04976e80d32ce830f3ec0961faa58d65a93b",
+      "git_blob_sha1": "d6c5c5ab861116ff3b357db0c9b9c285e934b252"
+    },
+    {
+      "path": "scripts/export_atlas.py",
+      "bytes": 8455,
+      "sha256": "5c2f39df1a700d372666aa5610ea9690262c72877b99c4070c840a3b60c3b092",
+      "git_blob_sha1": "028cc23bb919ce0b562adbc95239da591ec980e9"
+    },
+    {
+      "path": "scripts/export_atlas_places.py",
+      "bytes": 13826,
+      "sha256": "09c415a074c1fe6a6fea540acd4908afcb290030421af1e28146848d0bbdf581",
+      "git_blob_sha1": "03c14d03a5cca7146089c40d383f1e1c0f61399d"
+    },
+    {
+      "path": "scripts/facade_depth.py",
+      "bytes": 27583,
+      "sha256": "5a1b32e52de945ad34456b33620e9d0edd7f89efb566e8107ee7fc30395d3023",
+      "git_blob_sha1": "cfe5971ec3075d8ccb5521b1c8b4564593798c13"
+    },
+    {
+      "path": "scripts/facade_finish.py",
+      "bytes": 26157,
+      "sha256": "74f2b418c47d4d36a6c0481e87b86b967881a9a5cf4a173a2b2c6514d2d1a163",
+      "git_blob_sha1": "012ec459c9121ad8b8de57fe5c73010625815bb8"
+    },
+    {
+      "path": "scripts/garden_detail.py",
+      "bytes": 29363,
+      "sha256": "0c6c728335054e6ae14535601ec57d18a85bdc6d176dfe0cd014e8feed4e9d4b",
+      "git_blob_sha1": "3223f55eed53c279b07fa90912b34549206dac8e"
+    },
+    {
+      "path": "scripts/garden_pilot.py",
+      "bytes": 28727,
+      "sha256": "7f9f426474831eaac92f5b611db03df53bd30fbdde49b944c491e3c5d65bd723",
+      "git_blob_sha1": "191112ef9e5fc4903465c433971f28969e674324"
+    },
+    {
+      "path": "scripts/ground_contact.py",
+      "bytes": 15566,
+      "sha256": "5728f854476b4adcba5b80ac093ccdd07280e23d8bb56d975712d98b32cad9a2",
+      "git_blob_sha1": "7d4c8f7fff9e4cb83ba39cb1b955eb4dc20a01e6"
+    },
+    {
+      "path": "scripts/hardscape_transition.py",
+      "bytes": 16794,
+      "sha256": "c2e7c4e70f4d7480d184ab714679c3843c3e8f67cb7ae816a59d992ba3e48bb1",
+      "git_blob_sha1": "0b739d26c43aeb617dc6855491f11f67bc2d36b0"
+    },
+    {
+      "path": "scripts/lake_study.py",
+      "bytes": 19880,
+      "sha256": "47d9d496e430d9154d74706ccfb571bdda40554114a9fed334b82527e1e0d285",
+      "git_blob_sha1": "d07ba082cb742c11b03ff829ec709647628434dd"
+    },
+    {
+      "path": "scripts/landscape_beds.py",
+      "bytes": 20250,
+      "sha256": "93fd9ee15df91d149b0681af9d5874f3630d48a76b9aa115ba01e7993ee9e0b1",
+      "git_blob_sha1": "038704055b9132546c0fafd45e5b955528139436"
+    },
+    {
+      "path": "scripts/landscape_surface.py",
+      "bytes": 6775,
+      "sha256": "0b842bd1e01cbd8715ce7b62defcb0ac55efe46bd792b6bf4f39876e711ed832",
+      "git_blob_sha1": "afdf665108263e227dcb603b33d1dee369a5a809"
+    },
+    {
+      "path": "scripts/north_pilot_detail.py",
+      "bytes": 17323,
+      "sha256": "1abdad4c96973f300bf2a38150738134e578576be1cff20db970b64c2b0b46d3",
+      "git_blob_sha1": "25888d8bca2c2998de0926610e489c78ca0cd723"
+    },
+    {
+      "path": "scripts/north_study.py",
+      "bytes": 46510,
+      "sha256": "d99b5e2a17406c1c5f61c64a31c0c55f96901d53dc756a6de102fd5123ba2930",
+      "git_blob_sha1": "5cbf3990d7a9b901aed0d1e7f7dc6956fdda4b92"
+    },
+    {
+      "path": "scripts/planting_finish.py",
+      "bytes": 18309,
+      "sha256": "30babdc1c521b92e9910eb45b232ca49b4cf41363e0a1d135905b4434c1afde1",
+      "git_blob_sha1": "697b6101454204f2832f0ed60950ffb72b0cfcfd"
+    },
+    {
+      "path": "scripts/promote_full_atlas.py",
+      "bytes": 44913,
+      "sha256": "f99d939895575960dc53d09a78294d31b993b98201b803f18bd1151c3ab3d9d1",
+      "git_blob_sha1": "3bab070d17b8a9b5b1c254317be80258b6b91fd7"
+    },
+    {
+      "path": "scripts/promote_north_pilot.py",
+      "bytes": 7397,
+      "sha256": "37f0249af1cc2aad6de848a8ad790fbdebb7d23b7dc8de9047484e46b0a1258c",
+      "git_blob_sha1": "d1fb81100d1bde87e59c138aabec82d22a379dc3"
+    },
+    {
+      "path": "scripts/refine_buildings.py",
+      "bytes": 30809,
+      "sha256": "e844bbb698646861e3364d18fa9363abf00523b8a36327f3044020827f8e09c6",
+      "git_blob_sha1": "6ed5feba53aca9b6d9d7ef163742cb7502fc7d2c"
+    },
+    {
+      "path": "scripts/verify_backup.py",
+      "bytes": 6687,
+      "sha256": "c9f97373fec5fc796462962e29b139d9413e572ca6e1f5ce6bb1b8fb8fb8b6dd",
+      "git_blob_sha1": "2434be99d19307923b4399bffe866fa37a1eb57a"
+    },
+    {
+      "path": "scripts/verify_landscape_atlas.py",
+      "bytes": 11476,
+      "sha256": "3657594bc804eafdb83735e4be42e48cd1fdab1d7360f4fb6f6a3ebd148a357a",
+      "git_blob_sha1": "c57230463929e5798ad00956a2e8716a23e99c0c"
+    },
+    {
+      "path": "src/App.jsx",
+      "bytes": 30038,
+      "sha256": "266089edf8135839749c7c32d7ac91ea05083a555a2d248aaa6ae6146c622568",
+      "git_blob_sha1": "d20fbdb1ee9d781583681e1f9966ba78cd3c8fad"
+    },
+    {
+      "path": "src/CampusAtlas.jsx",
+      "bytes": 57048,
+      "sha256": "51eb19720f0b363d0e037608ba5bbfc39eed98f76b2554beca2a7f20a54ec2b5",
+      "git_blob_sha1": "020c916a53dffe2d468ee7f79b857d47c6cc802c"
+    },
+    {
+      "path": "src/CampusMap.jsx",
+      "bytes": 23167,
+      "sha256": "d3b9fcd6e28a43f9b47e32fc847e8bcf6018c10b459668a1dc386f9588dc1d0c",
+      "git_blob_sha1": "4cc673b72092200848807d718562074a33049297"
+    },
+    {
+      "path": "src/CampusModelPreview.jsx",
+      "bytes": 20594,
+      "sha256": "d66ccdb404932a329e54ff87d73d8463879c053bbff2f75c2f249fa313335faa",
+      "git_blob_sha1": "c588e50178d0b672d84f46d729e086d40a98d212"
+    },
+    {
+      "path": "src/ThreeCampusMap.jsx",
+      "bytes": 23243,
+      "sha256": "9f7d3b18871fb03332df3fd120396f762d82e7d108e8347b1500d4c8f464f82f",
+      "git_blob_sha1": "e5c91f43e6849c210045e341b5209b7bc8833a65"
+    },
+    {
+      "path": "src/campusAtlas.css",
+      "bytes": 27867,
+      "sha256": "72bffc20569e487464dddd70f7625ab393c58af988069230155fbfc85bc56a4c",
+      "git_blob_sha1": "8510b6f49d3e7fb290031f1496703de4d7655d5f"
+    },
+    {
+      "path": "src/campusData.js",
+      "bytes": 15100,
+      "sha256": "9d776d80a41efb5e0db617ef8cf886038fda1762966e368ceac7d53f5231e1e0",
+      "git_blob_sha1": "9cacd195bbdf83004ebbae6bbb6c0593ade3e753"
+    },
+    {
+      "path": "src/campusModelDetails.js",
+      "bytes": 2646,
+      "sha256": "ca5902b916d9cee0197c333f92007d20c16535b0ee61f22145f8858c1f15201a",
+      "git_blob_sha1": "fe479ad42d7d664506106cad13049c91ef7f5c3d"
+    },
+    {
+      "path": "src/campusModelStyle.js",
+      "bytes": 6431,
+      "sha256": "75365c811ef55da9a0e1b5caef596fb04d2f0b4971f9475ddb2b94c469e1a6b9",
+      "git_blob_sha1": "345f3b4eef3ec5545603b0d3af8d3445939bacec"
+    },
+    {
+      "path": "src/main.jsx",
+      "bytes": 230,
+      "sha256": "de37fb5d8889e7bcc4452f8748471bcefba76985fc08529e599e23be44f1dd5e",
+      "git_blob_sha1": "3754b7253bc441228f55c56a56b5179fcafc1980"
+    },
+    {
+      "path": "src/styles.css",
+      "bytes": 47768,
+      "sha256": "c20906f925d6fc47710e8c53972b1ba51b20e957017ecd68b70486ce2fb12208",
+      "git_blob_sha1": "0339471d4301e7d82ac019df8a0900d3813540f1"
+    },
+    {
+      "path": "vite.config.js",
+      "bytes": 213,
+      "sha256": "91e063f6754059233772a58eb6caaaf69892e1f0565540c419a78ace6ca3d593",
+      "git_blob_sha1": "59a04ae921f02006edddb958e1745644f37e1c2e"
+    },
+    {
+      "path": "恢复说明.md",
+      "bytes": 6487,
+      "sha256": "37c0e0ebed7fec68cdb945b32bdd8de686ee4d8fc04674162431751d44d50748",
+      "git_blob_sha1": "bffb519b7c7ceae1422149cadf35e1b9255111ba"
+    },
+    {
+      "path": "进度.md",
+      "bytes": 168874,
+      "sha256": "6a575b7fe7885c446a828785a570957c3d545ae6ba23cad6d37799ea9735dc6f",
+      "git_blob_sha1": "ab8ec191fdfd9caa1cda4ef792b82a72774bb211"
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "title": "太湖校园南部花园局部样板",
+  "status": "candidate_needs_visual_review",
+  "source_pixel_roi": [
+    [
+      255,
+      1378
+    ],
+    [
+      529,
+      1654
+    ]
+  ],
+  "source_plaza_center_pixel": [
+    351,
+    1559
+  ],
+  "source_path_ids": [
+    "Flower garden central loop",
+    "Flower garden northern connection",
+    "Flower garden southern connection",
+    "Flower garden eastern winding walk"
+  ],
+  "source_path_max_smoothing_deviation_m": 3.027946921877923,
+  "source_tree_centres_preserved": 270,
+  "understorey_attached_to_source_tree_centres": 84,
+  "source_tree_centres_reclassified_as_eastern_pond": 2,
+  "source_tree_trunks_reclassified_as_eastern_pond": 2,
+  "source_tree_sprite_count": 270,
+  "oval_canopy_sprite_count": 8,
+  "source_road_names": [
+    "花卉园东南路",
+    "梅茶一路"
+  ],
+  "oval_shrub_positions_source_pixels": [
+    [
+      497,
+      1565
+    ],
+    [
+      501,
+      1564
+    ],
+    [
+      505,
+      1567
+    ],
+    [
+      497,
+      1570
+    ],
+    [
+      502,
+      1570
+    ],
+    [
+      506,
+      1572
+    ],
+    [
+      499,
+      1576
+    ],
+    [
+      503,
+      1577
+    ]
+  ],
+  "pilot_hidden_coarse_paving": [
+    "Expansion source paving",
+    "Expansion paving courses"
+  ],
+  "image_size": [
+    2400,
+    1800
+  ],
+  "samples": 26,
+  "camera": {
+    "position": [
+      -222.23788452148438,
+      -1729.3729248046875,
+      1198.0162353515625
+    ],
+    "rotation_euler": [
+      0.6632251143455505,
+      0.0,
+      0.0
+    ],
+    "ortho_scale": 270.6339111328125
+  },
+  "sources": {
+    "scripts/campus_study.py": "e662d7882f4af8555945d4009c34aea2d74088bcba883f1684026070f1c14c3f",
+    "scripts/north_study.py": "4eea671cda5f546d55e68447c5342ae2a4b3c6f7417e5183581b43f2c364ebb9",
+    "scripts/lake_study.py": "47d9d496e430d9154d74706ccfb571bdda40554114a9fed334b82527e1e0d285",
+    "scripts/campus_atlas.py": "c1428a2a8f1670536c55fd79040e66751a3bc17a27a9a6c00824996ef6fc5e42",
+    "scripts/export_atlas.py": "5c2f39df1a700d372666aa5610ea9690262c72877b99c4070c840a3b60c3b092",
+    "scripts/refine_buildings.py": "106f10b6d772b34142c83cba575ef6b8184db941419cd3e68dc4c222fe83e133",
+    "model/campus/campus.blend": "324aa53083823d1b7d18113337aa6a3733d4fe898312bee0e442bd308b490703",
+    "model/campus/layout.json": "15263a5b2337df0148a517890788412b3bd13c3f27046e6d75f542abc77761c6",
+    "model/campus/roads.json": "e00c3eda53c6d5c03006e07352e6af48e79cb4e1fef5f0903f08abff159f2bea",
+    "model/campus/references/satellite.jpg": "25393f19f1bb0dd76aec3479238a37858d3a8828f0329f1fb727ac577aa583b2",
+    "model/campus/references/satellite-export.json": "368bc5f95e384dc649c7a6f6b593cbfc6675d8f2522ba5cfcffad06e7271becd",
+    "model/central-campus/footprints.json": "2f6bd2741b16af476b53ad871167dfb0c66292144d11e6ce3d6dfaa057c7abd7",
+    "model/central-campus/references/satellite.jpg": "9ec90612031c2a039eb433c278fd4fb7dbfc62b0cf2907557d363b066a52c640",
+    "model/central-campus/references/satellite-export.json": "438a664f9363d783548c89fd5e696307aa8481acf2473114321af16158c3d6a9",
+    "model/central-campus/references/campus-aerial.jpg": "1c0d935403e643889873e06439b1f4d26a536eea4af673321a993ca71fbb60d5",
+    "model/central-campus/references/lake-photo.jpg": "4f46d976823318408589519f44a5077c68fb4fde82d88f74dc9bbe2daca508a5",
+    "scripts/garden_pilot.py": "7f9f426474831eaac92f5b611db03df53bd30fbdde49b944c491e3c5d65bd723",
+    "scripts/campus_expansion.py": "ea9dc0cef08a52e4e1c01b27a156c4c3c81db4cce5b2df16195b00721befe60a",
+    "output/garden-tree-canopy.png": "cc2eaf3dc78bee167e20621e23496e5ae216351e774c528ab9556941ee04b615"
+  },
+  "checks": {
+    "island_outside_source_water_m2": 0.0,
+    "plaza_roof_overlap_m2": 0.0,
+    "paths_outside_ground_m2": 0.0,
+    "paths_roof_overlap_m2": 0.0,
+    "paths_water_overlap_m2": 0.0,
+    "junctions_outside_ground_m2": 0.0,
+    "planting_roof_overlap_m2": 0.0,
+    "tree_floor_outside_ground_m2": 0.0,
+    "tree_floor_roof_overlap_m2": 0.0,
+    "tree_floor_water_overlap_m2": 0.0,
+    "forecourt_roof_overlap_m2": 0.0,
+    "forecourt_planting_outside_source_m2": 0.0,
+    "deep_water_outside_source_m2": 0.0,
+    "east_row_plot_outside_source_ground_m2": 0.0,
+    "east_row_plot_roof_overlap_m2": 0.0,
+    "small_pond_outside_source_ground_m2": 0.0,
+    "small_pond_roof_overlap_m2": 0.0,
+    "small_pond_road_overlap_m2": 0.0,
+    "light_road_outside_existing_road_m2": 0.0,
+    "dark_road_outside_existing_road_m2": 0.0
+  },
+  "method": "Native Blender 3-D render; source-traced buildings, roads and tree centres. Satellite-visible central stone island restored inside the formerly solid flower-round-water polygon, and the misclassified flower-square polygon rendered as a striped paved forecourt with planted oval. Existing winding walks were smoothed within their recorded controls. The source-named diagonal road is finished as pale paving and Meicha First Road as charcoal pavement with restrained centre dashes; both finishes are clipped to existing road geometry. Deep water and source-supported planted centres add local material depth. An eastern planted row plot and small separate pond are bounded by visible satellite pixels.",
+  "limitations": "Plant species, planted-row spacing, paving dimensions, road paint, hidden facades and water depth are illustrative. Other-campus reference is visual craft only.",
+  "image_sha256": "6ddbd8c693bf8c9f056ff65f28c5c7527f6f559df00753d7b3f938bb54fbb1e8",
+  "image_bytes": 727162,
+  "visual_review": {
+    "status": "pending"
+  }
+}

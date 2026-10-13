@@ -1,0 +1,23 @@
+node_modules/
+dist/
+.playwright-cli/
+.DS_Store
+*.log
+__pycache__/
+*.py[cod]
+
+# Local credentials and tool state are not project recovery inputs.
+.env
+.env.*
+!.env.example
+!.env.*.example
+.npmrc
+.netrc
+.git-credentials
+*.pem
+*.key
+*.p12
+*.pfx
+.codex/
+.claude/
+

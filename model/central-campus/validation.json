@@ -1,0 +1,91 @@
+{
+  "status": "passed",
+  "scope": "geometry consistency only; not physical accuracy or school approval",
+  "features": [
+    {
+      "id": "L01 lake traced shoreline",
+      "vertices": 29,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 7.889902816839275e-09
+    },
+    {
+      "id": "B06 Teaching 6 main",
+      "vertices": 13,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 9.183002786526834e-09
+    },
+    {
+      "id": "B06 central raised block",
+      "vertices": 4,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 7.4372374698835395e-09
+    },
+    {
+      "id": "B06 west lower wing",
+      "vertices": 10,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 6.2578170967105295e-09
+    },
+    {
+      "id": "B06 east lower wing",
+      "vertices": 10,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 8.904817540931829e-09
+    },
+    {
+      "id": "B06 rear fan canopy",
+      "vertices": 41,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 8.027208389039284e-09
+    },
+    {
+      "id": "B07 west courtyard wings",
+      "vertices": 8,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 1.0241594336558158e-08
+    },
+    {
+      "id": "B07 north wing",
+      "vertices": 4,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 4.010164397153942e-09
+    },
+    {
+      "id": "B08 north academic bar",
+      "vertices": 4,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 1.002522550680844e-08
+    },
+    {
+      "id": "B08 lakeside courtyard wings",
+      "vertices": 10,
+      "simple_polygon": true,
+      "ccw_exterior": true,
+      "round_trip_error_pixels": 9.299988664573729e-09
+    }
+  ],
+  "scene": {
+    "duplicate_columns_removed": [
+      "B06 ground column.009",
+      "B06 ground column.016"
+    ],
+    "unique_ground_columns": 27,
+    "plan_frame_bounds_normalized": [
+      0.1677824705839157,
+      0.06998872756958008,
+      0.8180556893348694,
+      0.9495187401771545
+    ],
+    "overview_ortho_scale": 485,
+    "plan_ortho_scale": 500
+  }
+}
