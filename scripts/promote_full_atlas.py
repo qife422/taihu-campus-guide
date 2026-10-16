@@ -30,6 +30,7 @@ PROOF_EXCLUSIONS = {
         'hardscape.final_material_slot_assignment_sha256',
         'planting.per_construction_preservation'),
     'paving_regularization': ('edge.per_construction_preservation',),
+    'context_roads': (),
 }
 
 
@@ -341,6 +342,121 @@ def validate_paving_regularization(candidate: dict) -> None:
     fingerprints = [edge['source_graph_sha256'], edge['finish_graph_sha256'],
         protection['scene_geometry_sha256'], protection['other_material_graphs_sha256']]
     assert all(len(h) == 64 and set(h) <= set('0123456789abcdef') for h in fingerprints)
+
+
+def validate_context_roads(candidate: dict) -> None:
+    """Bind the scoped exterior subtraction and actual generated road meshes."""
+    check = candidate['checks']['context_roads']
+    assert check['status'] == 'passed'
+    assert 'scripts/context_roads.py' in candidate['sources']
+    names = {'钱荣路', '外部道路南段'}
+    assert set(check['source_road_names']) == names and len(check['source_road_names']) == 2
+    assert len(check['source_roads']) == 2
+    assert {row['name'] for row in check['source_roads']} == names
+    protected = check['protected_connector_source_roads']
+    assert protected and not ({row['name'] for row in protected} & names)
+    all_sources = [*check['source_roads'], *protected]
+    assert len({row['name'] for row in all_sources}) == len(all_sources)
+    layout_path = 'model/campus/layout.json'
+    layout_bytes = (ROOT / layout_path).read_bytes()
+    assert candidate['sources'][layout_path] == sha(layout_bytes)
+    traced_sources = {row[0]: row for row in json.loads(layout_bytes)['roads']}
+    assert {row['name'] for row in all_sources} == set(traced_sources)
+    hashes = []
+    for row in all_sources:
+        assert math.isfinite(row['width_m']) and row['width_m'] > 0
+        traced = traced_sources[row['name']]
+        assert row['width_m'] == traced[2] and len(row['points_world']) == len(traced[1])
+        assert len(row['points_world']) >= 2
+        assert all(len(point) == 2 and all(math.isfinite(v) for v in point)
+            for point in row['points_world'])
+        assert row['buffer_join_style'] == row['buffer_cap_style'] == 'round'
+        assert row['buffer_quad_segs'] == 16
+        hashes.append(row['source_geometry_sha256'])
+    connectors = check['connector_protection']
+    assert connectors['source_noncontext_road_count'] == len(protected)
+    assert math.isfinite(connectors['old_external_context_overlap_with_noncontext_roads_m2'])
+    assert connectors['old_external_context_overlap_with_noncontext_roads_m2'] >= 0
+    for key in ('removed_noncontext_road_area_m2', 'removed_noncontext_curb_area_m2'):
+        assert math.isfinite(connectors[key]) and 0 <= connectors[key] < 1e-7
+    hashes.extend(connectors[key] for key in ('context_outside_ground_mask_sha256',
+        'source_noncontext_road_union_sha256', 'source_noncontext_curb_protection_sha256'))
+    assert check['curb_removal_buffer_m'] == .25
+    for name in ('road', 'curb'):
+        row = check[name]
+        for key in ('before_area_m2', 'after_area_m2', 'removed_area_m2',
+                    'allowed_removal_mask_area_m2'):
+            assert math.isfinite(row[key]) and row[key] > 0, (name, key)
+        assert abs(row['before_area_m2'] - row['after_area_m2'] - row['removed_area_m2']) < 1e-6
+        assert row['removed_area_m2'] <= row['allowed_removal_mask_area_m2'] + 1e-6
+        for key in ('inside_ground_difference_m2', 'outside_allowed_mask_difference_m2',
+                    'new_outside_old_area_m2', 'allowed_removal_mask_inside_ground_m2'):
+            assert math.isfinite(row[key]) and 0 <= row[key] < 1e-7, (name, key)
+        assert row['components_before'] > 0 and row['components_after'] > 0
+        hashes.append(row['allowed_removal_mask_sha256'])
+    assert check['road']['removed_area_m2'] > 1
+    assert 0 <= check['new_transverse_curb_area_m2'] < 1e-7
+    connection = check['campus_connectivity']
+    assert connection['inside_component_count_before'] == connection['inside_component_count_after'] > 0
+    assert connection['inside_hole_count_before'] == connection['inside_hole_count_after'] >= 0
+    assert connection['each_inside_component_and_its_holes_preserved']
+    for key in ('ground_boundary_contact_length_before_m', 'ground_boundary_contact_length_after_m'):
+        assert math.isfinite(connection[key]) and connection[key] >= 0
+    for key in ('ground_boundary_contact_lost_length_m', 'ground_boundary_contact_added_length_m'):
+        assert math.isfinite(connection[key]) and 0 <= connection[key] < 1e-7
+    assert abs(connection['ground_boundary_contact_length_before_m'] -
+               connection['ground_boundary_contact_length_after_m']) < 1e-7
+    assert len(check['gates']) == 3 and {row['id'] for row in check['gates']} == {'gate1', 'gate2', 'gate3'}
+    for row in check['gates']:
+        assert row['inspection_radius_m'] == 12
+        assert len(row['world_xy']) == 2 and all(math.isfinite(v) for v in row['world_xy'])
+        for key in ('nearby_removed_road_area_m2', 'nearby_removed_curb_area_m2'):
+            assert math.isfinite(row[key]) and 0 <= row[key] < 1e-7
+        for key in ('nearest_joined_road_before_m', 'nearest_joined_road_after_m'):
+            assert math.isfinite(row[key]) and row[key] >= 0
+        assert row['old_joined_road_covers_gate'] == row['new_joined_road_covers_gate']
+    diagnostic = check['diagnostic']
+    assert diagnostic['world_xy'] == [249.10, 111.05]
+    assert not diagnostic['ground_contains'] and diagnostic['distance_to_ground_m'] > 0
+    assert all(diagnostic[key] for key in ('before_road_covers', 'allowed_mask_covers', 'removed_road_covers'))
+    assert not diagnostic['after_road_covers']
+    frames = check['comparison_frames']
+    assert len(frames) == 2 and {row['key'] for row in frames} == {'external-grey-band', 'campus-road-seam'}
+    for row in frames:
+        assert row['source_keys'] and set(row['source_keys']) <= names
+        frame = row['source_world_frame']
+        assert len(frame) == 4 and all(len(point) == 3 and all(math.isfinite(v) for v in point) for point in frame)
+        assert all(point[2] == .35 for point in frame)
+        assert max(point[0] for point in frame) > min(point[0] for point in frame)
+        assert max(point[1] for point in frame) > min(point[1] for point in frame)
+        assert isinstance(row['frame_method'], str) and row['frame_method']
+    assert set(check['input_geometry_sha256']) == {'road', 'curb', 'ground'}
+    assert set(check['output_geometry_sha256']) == set(check['removed_geometry_sha256']) == {'road', 'curb'}
+    for key in ('input_geometry_sha256', 'output_geometry_sha256', 'removed_geometry_sha256'):
+        hashes.extend(check[key].values())
+    assert all(check['input_geometry_sha256'][name] != check['output_geometry_sha256'][name]
+        for name in ('road', 'curb'))
+    assert check['source_inputs_unchanged']
+    meshes = check['mesh_verification']
+    expected = {'Joined continuous source roads': ('road', .35),
+                'Joined continuous road curbs': ('curb', .38)}
+    assert set(meshes) == set(expected)
+    for name, (role, height) in expected.items():
+        row = meshes[name]
+        assert row['world_z_m'] == height and row['numeric_planar_buffer_m'] == .0002
+        assert 0 <= row['maximum_height_error_m'] < 1e-6 and row['triangle_count'] > 0
+        assert math.isfinite(row['actual_area_m2']) and row['actual_area_m2'] > 0
+        for key in ('actual_outside_expected_buffer_area_m2', 'expected_missing_from_actual_buffer_area_m2'):
+            assert math.isfinite(row[key]) and 0 <= row[key] < 1e-7
+        assert row['expected_geometry_sha256'] == check['output_geometry_sha256'][role]
+        hashes.extend((row['expected_geometry_sha256'], row['actual_geometry_sha256']))
+    assert not meshes['Joined continuous source roads']['actual_covers_grey_band_diagnostic']
+    trees = check['tree_preservation']
+    assert trees['source_crown_object_count_before'] == trees['source_crown_object_count_after'] > 0
+    assert trees['original_crown_objects_pose_and_visibility_preserved']
+    assert trees['final_source_tree_pair_count'] == 1971
+    hashes.append(trees['pose_visibility_sha256'])
+    assert all(len(h) == 64 and set(h) <= set('0123456789abcdef') for h in hashes)
 
 
 def main() -> None:
@@ -733,7 +849,9 @@ def main() -> None:
         assert row['outside_support_m2_at_float32_tolerance'] < 1e-7
     validate_site_sources(candidate)
     validate_paving_regularization(candidate)
-    assert len(candidate['sources']) == 32 and 'scripts/paving_cleanup.py' in candidate['sources']
+    validate_context_roads(candidate)
+    assert len(candidate['sources']) == 33 and 'scripts/paving_cleanup.py' in candidate['sources']
+    assert 'scripts/context_roads.py' in candidate['sources']
     assert candidate['camera'] == baseline['camera']
     assert candidate['roof_faces_world'] == baseline['roof_faces_world']
     tree_centres = lambda value: sorted(tuple(row[1]) for row in value['landscape_revision']['tree_pairs'])

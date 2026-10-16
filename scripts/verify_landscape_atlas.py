@@ -10,7 +10,7 @@ import math
 
 from PIL import Image
 from promote_full_atlas import (canonical_digest, validate_construction_proof,
-    validate_paving_regularization, validate_site_sources)
+    validate_context_roads, validate_paving_regularization, validate_site_sources)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -26,7 +26,8 @@ def validate_evidence(meta, qa):
     assert qa['source_hashes'] == meta['sources']
     assert len({row['path'] for row in qa['captures']}) == 13
     for path in ('scripts/promote_full_atlas.py', 'scripts/verify_landscape_atlas.py',
-                 'scripts/seal_landscape_atlas.py', 'scripts/paving_cleanup.py'):
+                 'scripts/seal_landscape_atlas.py', 'scripts/paving_cleanup.py',
+                 'scripts/context_roads.py'):
         assert path in qa['source_sha256'], ('Unbound current consumer', path)
     for name in ('frontend_validation', 'website_frontend_validation'):
         parent = meta[name]
@@ -44,6 +45,42 @@ def validate_evidence(meta, qa):
         assert record['places_image_sha256'] == meta['image_sha256']
         assert record['natural_size'] == [7168, 3072]
         assert record['roof_hotspots'] == 130 and record['source_points'] == 7 and not record['overflow']
+        assert record['context_roads_status'] == 'passed'
+        assert record['context_roads_source_sha256'] == meta['sources']['scripts/context_roads.py']
+        assert record['context_road_geometry_sha256'] == meta['checks']['context_roads']['output_geometry_sha256']['road']
+        assert record['context_curb_geometry_sha256'] == meta['checks']['context_roads']['output_geometry_sha256']['curb']
+    road_captures = [row for row in qa['captures']
+        if row['path'] == 'output/playwright/landscape-road-seam.jpg']
+    assert len(road_captures) == 1
+    assert not any(row['path'].startswith('output/playwright/landscape-formal-beds.')
+        for row in qa['captures'])
+    road_focus = road_captures[0]['focus']
+    assert road_focus['context_frame_key'] == 'campus-road-seam'
+    source_frames = [row for row in meta['checks']['context_roads']['comparison_frames']
+        if row['key'] == 'campus-road-seam']
+    assert len(source_frames) == 1
+    source_frame = source_frames[0]
+    assert road_focus['source_frame_world'] == source_frame['source_world_frame']
+    assert road_focus['source_keys'] == source_frame['source_keys']
+    assert road_focus['frame_method'] == source_frame['frame_method']
+    assert road_focus['interaction_counts']['real_drag_gestures'] > 0
+    assert road_focus['interaction_counts']['zoom_button_clicks'] > 0
+    assert 0 < road_focus['native_to_screen_scale'] <= 1.6 + 1e-9
+    bounds = road_focus['viewport_constraint']['bounds_px']
+    assert road_focus['viewport_constraint']['margin_px'] == 24
+    assert road_focus['viewport_constraint']['frame_point_count'] == len(road_focus['source_frame_world'])
+    assert len(road_focus['final_screen_frame']) == len(road_focus['source_frame_world'])
+    assert all(bounds[0] + 24 <= x <= bounds[2] - 24 and
+        bounds[1] + 24 <= y <= bounds[3] - 24
+        for x, y in road_focus['final_screen_frame'])
+    formal_captures = [row for row in qa['captures']
+        if row['path'] == 'output/playwright/landscape-formal-court.png']
+    assert len(formal_captures) == 1
+    formal_beds = [{'source_key': row['source_key'], 'world_bounds_m': row['world_bounds_m']}
+        for row in meta['checks']['landscape_detail']['beds']['beds']
+        if row['source_key'].startswith('E formal')]
+    assert len(formal_beds) == 2
+    assert formal_captures[0]['focus']['retained_formal_beds'] == formal_beds
     comparison = qa['native_comparison']
     assert comparison['script'] == 'scripts/compare_landscape_atlas.py'
     assert sha(ROOT / comparison['script']) == comparison['script_sha256']
@@ -54,6 +91,17 @@ def validate_evidence(meta, qa):
     assert comparison['camera'] == meta['camera']
     assert comparison['input_sizes'] == {'before': [7168, 3072], 'current': [7168, 3072]}
     assert comparison['samples'] == meta['samples'] == 16
+    assert comparison['context_output_geometry_sha256'] == meta['checks']['context_roads']['output_geometry_sha256']
+    regions = {row['key']: row for row in comparison['regions']}
+    assert len(comparison['regions']) == 3 and set(regions) == {
+        'external-grey-band', 'campus-road-seam', 'middle-paving-control'}
+    for frame in meta['checks']['context_roads']['comparison_frames']:
+        row = regions[frame['key']]
+        assert row['source_basis'] == 'checks.context_roads.comparison_frames'
+        assert row['source_world_frame'] == frame['source_world_frame']
+        assert row['source_keys'] == frame['source_keys']
+        assert row['frame_method'] == frame['frame_method']
+    assert regions['middle-paving-control']['control_paving_geometry_sha256'] == meta['checks']['paving_regularization']['output_geometry_sha256']
     assert len(comparison['artifacts']) == 1
     for record in comparison['artifacts']:
         path = ROOT / record['path']
@@ -80,8 +128,10 @@ def main():
     assert len(meta['render_tiles']) == 8 and meta['samples'] == 16
     for path, fingerprint in meta['sources'].items():
         assert sha(ROOT / path) == fingerprint, path
-    assert len(meta['sources']) == 32 and 'scripts/paving_cleanup.py' in meta['sources']
+    assert len(meta['sources']) == 33 and 'scripts/paving_cleanup.py' in meta['sources']
+    assert 'scripts/context_roads.py' in meta['sources']
     validate_paving_regularization(meta)
+    validate_context_roads(meta)
     assert sha(ROOT / 'scripts/campus_expansion_export.py') == meta['exporter_sha256']
     assert sha(ROOT / 'scripts/promote_full_atlas.py') == meta['promotion']['script_sha256']
     manifest_path = ROOT / 'model/campus/manifest.json'
@@ -140,10 +190,11 @@ def main():
     site_proof = meta['site_construction_consistency']
     validate_construction_proof(meta, site_proof, 'site_finish')
     validate_construction_proof(meta, meta['paving_construction_consistency'], 'paving_regularization')
+    validate_construction_proof(meta, meta['context_roads_construction_consistency'], 'context_roads')
     seal = meta['iteration_seal']
     assert seal['status'] == 'passed' and seal['script'] == 'scripts/seal_landscape_atlas.py'
     assert sha(ROOT / seal['script']) == seal['script_sha256']
-    assert meta['previous_iteration']['metadata_reference']['git_commit'] == 'b92632471488d95a43872fe5c2d3c45775ea6561'
+    assert meta['previous_iteration']['metadata_reference']['git_commit'] == '0e3aee91daf1a114211dd1b65c8bb98bb42c3199'
     assert meta['target_reference_revision']['primary_url'] == 'https://gis.whut.edu.cn/index.shtml'
     assert meta['target_reference_revision']['status'] == 'website_alignment_not_met'
     assert meta['visual_review']['reference_alignment_status'] == 'not_met'

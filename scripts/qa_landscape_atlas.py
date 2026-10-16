@@ -21,7 +21,7 @@ SOURCE_PATHS = [
     'scripts/landscape_beds.py', 'scripts/courtyard_finish.py',
     'scripts/landscape_surface.py', 'scripts/facade_finish.py',
     'scripts/hardscape_transition.py', 'scripts/planting_finish.py',
-    'scripts/paving_cleanup.py', 'scripts/campus_expansion_export.py',
+    'scripts/paving_cleanup.py', 'scripts/context_roads.py', 'scripts/campus_expansion_export.py',
     'scripts/promote_full_atlas.py', 'scripts/verify_landscape_atlas.py',
     'scripts/promote_north_pilot.py', 'scripts/seal_landscape_atlas.py',
     'scripts/compare_landscape_atlas.py', 'scripts/qa_landscape_atlas.js',
@@ -44,7 +44,7 @@ def main():
     assert sum(path.stat().st_size for path in evidence.rglob('*') if path.is_file()) + 12*1024**2 < 192*1024**2
     assert sum(path.stat().st_size for path in STAGE.rglob('*') if path.is_file()) + 1024**2 < 192*1024**2
     meta = json.loads((ROOT / 'public/assets/campus-atlas.json').read_bytes())
-    assert len(meta['sources']) == 32
+    assert len(meta['sources']) == 33
     for path, expected in meta['sources'].items():
         assert sha(ROOT / path) == expected, path
     source_hashes = {path: sha(ROOT / path) for path in SOURCE_PATHS}

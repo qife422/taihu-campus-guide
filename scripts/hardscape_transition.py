@@ -115,8 +115,7 @@ def add_hardscape_transition(state):
              ('Expansion road margins', .38, state['asphalt'].buffer(.25).difference(state['asphalt']).intersection(state['outside']).difference(state['mask'])),
              ('Expansion paving courses', .335, state['paving'].difference(state['paving'].buffer(-.22))),
              ('Joined continuous source roads', .35, state['ctx']['road']),
-             ('Joined continuous road curbs', .38, state['ctx']['road'].buffer(.25).difference(state['ctx']['road'])
-              .difference(state['ctx']['allroof']).difference(state['ctx']['allwater'].buffer(4.85)).intersection(state['ctx']['roi']))]
+             ('Joined continuous road curbs', .38, state['ctx']['road_curbs'])]
     copies = {}; recipes = []; targets = []; inactive = []
 
     def transition_material(base):

@@ -28,16 +28,18 @@ from PIL import Image
 
 from promote_full_atlas import (ASSET_NAMES, PROOF_EXCLUSIONS, ROOT, STAGE,
     canonical_digest, construction_core, encoded, replace, shared_budget,
-    validate_construction_proof, validate_paving_regularization, validate_site_sources)
+    validate_construction_proof, validate_context_roads, validate_paving_regularization,
+    validate_site_sources)
 from verify_landscape_atlas import validate_evidence
 
 
-BASELINE_COMMIT = 'b92632471488d95a43872fe5c2d3c45775ea6561'
+BASELINE_COMMIT = '0e3aee91daf1a114211dd1b65c8bb98bb42c3199'
 META_PATH = ROOT / 'public/assets/campus-atlas.json'
 QA_PATH = ROOT / 'output/playwright/landscape.json'
 PROOF_NAMES = {'landscape_detail': 'landscape_construction_consistency',
                'site_finish': 'site_construction_consistency',
-               'paving_regularization': 'paving_construction_consistency'}
+               'paving_regularization': 'paving_construction_consistency',
+               'context_roads': 'context_roads_construction_consistency'}
 
 
 def file_sha(path):
@@ -103,7 +105,7 @@ def embed_places():
     assert payload['source_paths']['atlas_metadata_input'] == 'public/assets/campus-atlas.json'
     assert payload['source_hashes']['atlas_metadata_input'] == hashlib.sha256(metadata_input).hexdigest(), (
         'Place export must target the exact current metadata input; rerun export_atlas_places.py')
-    assert len(meta['sources']) == 32
+    assert len(meta['sources']) == 33 and 'scripts/context_roads.py' in meta['sources']
     for path, expected in meta['sources'].items():
         assert file_sha(ROOT / path) == expected, ('Current native source mismatch', path)
     assert file_sha(ROOT / 'scripts/promote_full_atlas.py') == meta['promotion']['script_sha256']
@@ -139,7 +141,8 @@ def main():
     method, method_input = read_input('method')
     meta = json.loads(META_PATH.read_bytes())
     assert meta['image_sha256'] != baseline['image_sha256'], 'Cannot reseal the previous image as a new iteration'
-    assert meta['sources'] == preview['sources'] and len(meta['sources']) == 32
+    assert meta['sources'] == preview['sources'] and len(meta['sources']) == 33
+    assert 'scripts/context_roads.py' in meta['sources']
     assert (meta['width'], meta['height'], meta['samples']) == (7168, 3072, 16)
     assert len(meta['render_tiles']) == 8
     assert (preview['width'], preview['height'], preview['samples']) == (1800, 1350, 8)
@@ -158,6 +161,7 @@ def main():
     for metadata in (preview, meta):
         validate_paving_regularization(metadata)
         validate_site_sources(metadata)
+        validate_context_roads(metadata)
         probe = baseline['central_roof_source_continuity']['geometry']
         assert {row['source_id']: row['geometry_sha256'] for row in
             metadata['central_roof_finish_revision']['objects']} == probe
@@ -176,7 +180,7 @@ def main():
         'image_sha256': baseline['image_sha256'],
         'source_collection_sha256': canonical_digest(baseline['sources']),
         'source_count': len(baseline['sources']),
-        'status': 'superseded by bounded early middle-campus paving regularization',
+        'status': 'superseded by bounded external context-road correction',
         'metadata_reference': {'status': 'historical_previous_image',
             'git_commit': BASELINE_COMMIT, 'path': 'public/assets/campus-atlas.json',
             'sha256': baseline_input['sha256'],
@@ -202,7 +206,7 @@ def main():
         'report': 'output/playwright/landscape.md', 'source_sha256': qa['source_sha256'],
         'captures': 13, 'viewports': [{'width': 1280, 'height': 720}, {'width': 390, 'height': 844}],
         'alignment_status': 'not_met',
-        'scope': 'Current native paving and retained map integration; earlier exhaustive UI tests remain historical',
+        'scope': 'Current external context-road correction and retained map integration; earlier exhaustive UI tests remain historical',
         'limitations': 'No complete reference parity, surveyed routing, true-device or Safari acceptance'}
     meta['frontend_validation'] = copy.deepcopy(frontend)
     meta['website_frontend_validation'] = copy.deepcopy(frontend)
@@ -245,7 +249,7 @@ def main():
     # All source, budget and current-evidence gates above complete before either write.
     replace(QA_PATH, qa_payload)
     replace(META_PATH, metadata_payload)
-    print(json.dumps({'status': 'sealed', 'sources': 32, 'captures': 13,
+    print(json.dumps({'status': 'sealed', 'sources': len(meta['sources']), 'captures': 13,
         'image_sha256': meta['image_sha256'], 'asset_bytes': meta['budget']['asset_bytes_actual'],
         'note': 'Rebuild dist and run verify_landscape_atlas.py for production readback'}, ensure_ascii=False))
 

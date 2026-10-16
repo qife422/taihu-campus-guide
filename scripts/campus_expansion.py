@@ -2015,6 +2015,9 @@ for row in regions:
     region_focus_records[row['id']]={'source':source,'pixel_frame':pixels,'height_envelope_m_estimate':[0,28],
         'projected_frame':frame,'full_record_count':row['count'],'scope':'Initial view only, entire regional list and source geometry retained'}
 checks={'paving_regularization':paving_regularization_checks,'road_roof_intersection_m2':asphalt.intersection(roofs).area,'paving_roof_intersection_m2':paving.intersection(roofs).area,'paving_water_intersection_m2':paving.intersection(water).area,'paving_artifact_cleanup':paving_cleanup,'paired_tree_count':len(pairs),'restored_sports_objects':sport_names,'excluded_context_crowns':excluded,'record_count':len(records),'north_detail':north_detail_checks,'garden_detail':garden_detail_checks,'central_parking_detail':central_parking_checks,'road_mark_detail':road_mark_checks,'b08_roof_detail':b08_roof_checks}
+assert len(pairs)==1971,'External-road cleanup must retain every existing paired source tree'
+checks['context_roads']=ctx['context_road_checks']
+checks['context_roads']['tree_preservation']['final_source_tree_pair_count']=len(pairs)
 checks['track_finish_repairs']=track_repairs
 checks['material_pass_roof_faces_preserved']=roof_faces_preserved
 checks['surface_finish']=surface_finish_checks

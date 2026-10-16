@@ -22,7 +22,7 @@ POSTER = ROOT/'output/playwright/landscape-comparison.webp'
 MANIFEST = CACHE/'iteration-comparison.json'
 SIZE = (7168, 3072)
 MIDDLE_IDS = [f'M{i:02}' for i in range(1, 8)]
-COURT_ID = 'M field pedestrian wedge'
+CONTEXT_FRAME_KEYS = ('external-grey-band', 'campus-road-seam')
 MAX_PANEL = (840, 620)
 CROP_PADDING_PX = 28
 DIRECTORY_LIMIT = 192*1024**2
@@ -65,7 +65,14 @@ def validate_pair(before, current):
     assert centres(before) == centres(current) and len(centres(current)) == 1971
     check = current['checks']['paving_regularization']
     assert check['status'] == 'passed' and check['source_building_ids'] == MIDDLE_IDS
+    assert check['output_geometry_sha256'] == before['checks']['paving_regularization']['output_geometry_sha256'], 'Middle paving control changed'
     assert 'scripts/paving_cleanup.py' in current['sources']
+    assert len(current['sources']) == 33 and 'scripts/context_roads.py' in current['sources']
+    context = current['checks']['context_roads']
+    assert context['status'] == 'passed'
+    assert set(context['output_geometry_sha256']) == {'road', 'curb'}
+    assert all(len(value) == 64 and set(value) <= set('0123456789abcdef')
+               for value in context['output_geometry_sha256'].values())
     for path, expected in current['sources'].items():
         assert sha((ROOT/path).read_bytes()) == expected, ('Candidate source changed', path)
 
@@ -111,32 +118,26 @@ def select_regions(before, current):
     roof_points = [point for key in MIDDLE_IDS for face in current['roof_faces_world'][key] for point in face]
     building_bounds = [min(p[0] for p in roof_points), min(p[1] for p in roof_points),
                        max(p[0] for p in roof_points), max(p[1] for p in roof_points)]
-    rows = lambda meta: [row for row in meta['checks']['landscape_detail']['courtyards']['sites']
-                         if row['source_id'] == COURT_ID]
-    old_court, new_court = rows(before), rows(current)
-    assert len(old_court) == len(new_court) == 1
-    old_court, new_court = old_court[0], new_court[0]
-    assert old_court['source_world_bounds'] == new_court['source_world_bounds']
-    assert old_court['source_paved_footprint_sha256'] == new_court['source_paved_footprint_sha256']
-    assert old_court['source_pixels'] == new_court['source_pixels']
-    court_bounds = new_court['source_world_bounds']
-    assert len(court_bounds) == 5
-    ground_z_high = max(0.0, float(court_bounds[4]))
-    window = current['checks']['paving_regularization']['candidate_world_bounds']
-    regions = [
-        {'key': 'middle-paving-and-lawn', 'label': 'Middle buildings: paving meets retained lawn',
+    context_frames = current['checks']['context_roads']['comparison_frames']
+    assert len(context_frames) == 2 and {row['key'] for row in context_frames} == set(CONTEXT_FRAME_KEYS)
+    indexed = {row['key']: row for row in context_frames}
+    labels = ('Exterior road: actual grey-band repair detail',
+              'Campus road seam: retained inside and repaired outside')
+    regions = []
+    for key, label in zip(CONTEXT_FRAME_KEYS, labels):
+        source = indexed[key]
+        frame = source['source_world_frame']
+        assert len(frame) >= 4 and all(len(point) == 3 and all(math.isfinite(v) for v in point) for point in frame)
+        assert source['source_keys'] and isinstance(source['frame_method'], str) and source['frame_method']
+        regions.append({'key': key, 'label': label,
+            'source_ids': source['source_keys'], 'source_keys': source['source_keys'],
+            'source_basis': 'checks.context_roads.comparison_frames',
+            'frame_method': source['frame_method'], 'source_world_frame': frame})
+    regions.append(
+        {'key': 'middle-paving-control', 'label': 'Retained middle buildings and paving control',
          'source_ids': MIDDLE_IDS, 'source_basis': 'Equal M01-M07 retained roof records and their ground-plane extent',
-         'source_world_frame': world_box(building_bounds, 0.0, max(p[2] for p in roof_points))},
-        {'key': 'paving-regularization-window', 'label': 'Bounded paving cleanup: full candidate window',
-         'source_ids': MIDDLE_IDS, 'source_basis': 'checks.paving_regularization.candidate_world_bounds',
-         'candidate_world_bounds': window, 'projection_z_range_m': [0.0, ground_z_high],
-         'source_world_frame': world_box(window, 0.0, ground_z_high)},
-        {'key': 'middle-retained-courtyard', 'label': 'Middle courtyard: retained source paving',
-         'source_ids': [COURT_ID], 'source_basis': 'Equal retained middle courtyard source cap bounds and footprint hash',
-         'source_object': new_court['source_object'],
-         'source_footprint_sha256': new_court['source_paved_footprint_sha256'],
-         'source_world_frame': world_box(court_bounds[:4], float(court_bounds[4]), float(court_bounds[4]))},
-    ]
+         'control_paving_geometry_sha256': current['checks']['paving_regularization']['output_geometry_sha256'],
+         'source_world_frame': world_box(building_bounds, 0.0, max(p[2] for p in roof_points))})
     for row in regions:
         row.update(crop_region(row['source_world_frame'], current['camera']))
     return regions
@@ -153,7 +154,7 @@ def make_poster(before_image, current_image, regions, image_hashes):
     height = 144+sum(row_heights)+row_gap*(len(regions)-1)+72
     poster = Image.new('RGB', (width, height), '#f1f1eb')
     draw = ImageDraw.Draw(poster)
-    draw.text((margin, 20), 'Native atlas / middle paving comparison', font=font(28), fill='#23251f')
+    draw.text((margin, 20), 'Native atlas / exterior road comparison', font=font(28), fill='#23251f')
     draw.text((margin, 61), 'Same camera, source roofs and crop coordinates. No colour adjustment or pixel enlargement.',
               font=font(16), fill='#55594f')
     columns = [('BEFORE', before_image, image_hashes['before']),
@@ -218,10 +219,11 @@ def manifest(before, current, input_info, regions, poster_payload, dimensions, r
         'input_sizes': {'before': list(SIZE), 'current': list(SIZE)},
         'samples': 16, 'camera': current['camera'], 'camera_sha256': digest(current['camera']),
         'equal_source_roof_records_sha256': digest(current['roof_faces_world']),
+        'context_output_geometry_sha256': current['checks']['context_roads']['output_geometry_sha256'],
         'regions': regions, 'rendering': rendering,
         'artifacts': [{'path': POSTER.relative_to(ROOT).as_posix(), 'sha256': sha(poster_payload),
                        'bytes': len(poster_payload), 'dimensions': dimensions}],
-        'limitations': 'Source crops are selected presentation regions, not proof of unchanged pixels or botanical/architectural accuracy. Original source-tree name/prototype allocation can differ across native processes; separate native preservation records apply. The paving window is projected between ground Z=0 and the retained courtyard cap height; this frames the region, not an occlusion measurement. Metadata inputs are historical file fingerprints, not recursively embedded metadata or active temporary artifacts. Native protection and human visual inspection are separate gates. No reference parity is claimed.'}
+        'limitations': 'Source crops are selected presentation regions, not proof of unchanged pixels or botanical/architectural accuracy. The first two frames come from actual context-road geometry and its retained campus seam; their footprints are diagnostic framing, not surveyed road bounds or new places. Original source-tree name/prototype allocation can differ across native processes; separate native preservation records apply. Metadata inputs are historical file fingerprints, not recursively embedded metadata or active temporary artifacts. Native protection and human visual inspection are separate gates. No reference parity is claimed.'}
 
 
 def directory_bytes(path):

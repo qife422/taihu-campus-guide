@@ -15,16 +15,22 @@ async (page) => {
   assert(meta.checks.landscape_detail.surface.material_count===4 && meta.checks.landscape_detail.beds.bed_count===4 && meta.checks.landscape_detail.courtyards.site_count===3,'Retained native detail metadata missing');
   assert(meta.checks.site_finish.facade && meta.checks.site_finish.hardscape && meta.checks.site_finish.planting,'Current site finishes missing');
   assert(meta.checks.paving_regularization.status==='passed' && meta.checks.paving_edge_finish.status==='passed','Current middle paving finish missing');
+  assert(Object.keys(meta.sources).length===33 && meta.sources['scripts/context_roads.py']?.length===64,'Current context-road source missing');
+  assert(meta.checks.context_roads?.status==='passed','Current context-road checks missing');
+  assert(['road','curb'].every(k=>/^[0-9a-f]{64}$/.test(meta.checks.context_roads.output_geometry_sha256[k])),'Current context-road output geometry hashes missing');
   assert(meta.map_places.image_sha256===meta.image_sha256,'New source points use stale image');
   const shot=async(name,criterion,focus=null,jpeg=false)=>{
     await ready();const state=await page.evaluate(async()=>{
       const img=document.querySelector('.leaflet-image-layer'),m=await(await fetch('/campus-atlas.json',{cache:'no-store'})).json();
       const bytes=await(await fetch(img.src,{cache:'no-store'})).arrayBuffer();
       const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(v=>v.toString(16).padStart(2,'0')).join('');
-      return {url:location.href,image_url:img.src,image_sha256:hash,formal_image_sha256:m.image_sha256,places_image_sha256:m.map_places.image_sha256,natural_size:[img.naturalWidth,img.naturalHeight],roof_hotspots:document.querySelectorAll('.atlas-building-hotspot').length,source_points:document.querySelectorAll('.atlas-source-point').length,overflow:document.documentElement.scrollWidth>innerWidth};
+      return {url:location.href,image_url:img.src,image_sha256:hash,formal_image_sha256:m.image_sha256,places_image_sha256:m.map_places.image_sha256,natural_size:[img.naturalWidth,img.naturalHeight],roof_hotspots:document.querySelectorAll('.atlas-building-hotspot').length,source_points:document.querySelectorAll('.atlas-source-point').length,overflow:document.documentElement.scrollWidth>innerWidth,
+        context_roads_status:m.checks.context_roads.status,context_roads_source_sha256:m.sources['scripts/context_roads.py'],
+        context_road_geometry_sha256:m.checks.context_roads.output_geometry_sha256.road,context_curb_geometry_sha256:m.checks.context_roads.output_geometry_sha256.curb};
     });
     assert(!state.overflow && state.roof_hotspots===130 && state.source_points===7,'Invalid viewport '+name);
     assert(state.image_sha256===meta.image_sha256 && state.formal_image_sha256===meta.image_sha256 && state.places_image_sha256===meta.image_sha256 && state.image_url.includes(meta.image_sha256.slice(0,12)),'Stale image '+name);
+    assert(state.context_roads_status==='passed' && state.context_roads_source_sha256===meta.sources['scripts/context_roads.py'] && state.context_road_geometry_sha256===meta.checks.context_roads.output_geometry_sha256.road && state.context_curb_geometry_sha256===meta.checks.context_roads.output_geometry_sha256.curb,'Stale context-road checks '+name);
     const path='output/playwright/landscape-'+name+(jpeg?'.jpg':'.png');await page.screenshot({path:root+path,...(jpeg?{type:'jpeg',quality:88}:{})});
     captures.push({path,criterion,viewport:page.viewportSize(),...state,focus});
   };
@@ -39,6 +45,7 @@ async (page) => {
     return native;
   };
   const focusPoint = async (meta, point, zooms, framePoints = []) => {
+    let dragGestures=0,zoomButtonClicks=0;
     const native=projectWorld(meta,point), nativeFrame=framePoints.map(p=>projectWorld(meta,p));
     const boundsNow = () => page.evaluate(({p,frame,w,h}) => {
       const image=document.querySelector('.atlas-map .leaflet-image-layer').getBoundingClientRect();
@@ -56,31 +63,34 @@ async (page) => {
         await page.mouse.move(bounds.cx,bounds.cy);await page.mouse.down();
         await page.mouse.move(bounds.cx+Math.max(-bounds.w*.4,Math.min(bounds.w*.4,bounds.cx-bounds.x)),
           bounds.cy+Math.max(-bounds.h*.4,Math.min(bounds.h*.4,bounds.cy-bounds.y)),{steps:12});
-        await page.mouse.up();await ready();
+        await page.mouse.up();dragGestures++;await ready();
       }
       const bounds=await boundsNow();
       if (Math.hypot(bounds.cx-bounds.x,bounds.cy-bounds.y)>=3) throw new Error('Real map drag did not centre retained point: '+JSON.stringify(bounds));
     };
-    await recenter();
     for(let i=0;i<zooms;i++) {
       await ready();
       if (await page.getByRole('button',{name:'放大地图',exact:true}).isDisabled()) break;
       const bounds=await boundsNow();
-      // The existing UI zoom button advances by .5. Conservatively keep all
-      // verified target centres / pitch corners inside the real map viewport.
-      if (bounds.frame.some(([x,y])=>Math.abs(x-bounds.cx)*Math.SQRT2>bounds.w/2-32 || Math.abs(y-bounds.cy)*Math.SQRT2>bounds.h/2-32)) break;
+      // Zoom before centring: maxBounds can prevent a target near an image
+      // edge from reaching the viewport centre while the whole image is small.
+      // Predict the centred target frame after the next real .5 zoom step.
+      if (bounds.frame.some(([x,y])=>Math.abs(x-bounds.x)*Math.SQRT2>bounds.w/2-32 || Math.abs(y-bounds.y)*Math.SQRT2>bounds.h/2-32)) break;
       if(bounds.native_to_screen_scale*Math.SQRT2>1.6)break;
       const oldWidth=await page.locator('.atlas-map .leaflet-image-layer').evaluate(el => el.getBoundingClientRect().width);
       await page.getByRole('button',{name:'放大地图',exact:true}).click();
+      zoomButtonClicks++;
       await page.waitForFunction(w => document.querySelector('.atlas-map .leaflet-image-layer').getBoundingClientRect().width>w+1,oldWidth);
       await ready();
     }
     await recenter();
     const bounds=await boundsNow();
+    if (!(bounds.native_to_screen_scale>0 && bounds.native_to_screen_scale<=1.6+1e-9)) throw new Error('Native detail scale exceeded: '+bounds.native_to_screen_scale);
     if (bounds.frame.some(([x,y])=>x<bounds.left+24 || x>bounds.right-24 || y<bounds.top+24 || y>bounds.bottom-24)) throw new Error('Detail targets clipped by map viewport: '+JSON.stringify(bounds));
     return {source_point_world:point,source_point_native:native,source_frame_world:framePoints,source_frame_native:nativeFrame,
       final_screen_frame:bounds.frame,centre_error_px:Math.hypot(bounds.cx-bounds.x,bounds.cy-bounds.y),
       final_image_width_px:bounds.image_width,native_to_screen_scale:bounds.native_to_screen_scale,
+      interaction_counts:{real_drag_gestures:dragGestures,zoom_button_clicks:zoomButtonClicks},
       viewport_constraint:{bounds_px:[bounds.left,bounds.top,bounds.right,bounds.bottom],margin_px:24,frame_point_count:framePoints.length},
       method:'Projected retained source coordinates using formal camera; real map drag and zoom buttons'};
   };
@@ -99,11 +109,30 @@ async (page) => {
     await inspect(name,'south',[lo[0]-8,hi[0]+8,lo[1]-8,hi[1]+8,lo[2],hi[2]],'Estimated ground-contact low foliage inside retained '+key+' cap');
   }
   const formal=beds.filter(r=>r.source_key.startsWith('E formal'));
-  const lo=[0,1,2].map(i=>Math.min(...formal.map(r=>r.world_bounds_m[0][i]))),hi=[0,1,2].map(i=>Math.max(...formal.map(r=>r.world_bounds_m[1][i])));
-  await inspect('formal-beds','extension',[lo[0]-12,hi[0]+12,lo[1]-12,hi[1]+12,lo[2],hi[2]],'Both retained formal beds and coarse courses in their existing surrounding plaza');
+  assert(formal.length===2,'Both retained formal beds required');
+  const contextFrames=meta.checks.context_roads.comparison_frames;
+  assert(contextFrames.length===2 && new Set(contextFrames.map(r=>r.key)).size===2,'Actual context-road frames missing');
+  const roadSeam=contextFrames.find(r=>r.key==='campus-road-seam');
+  assert(roadSeam && roadSeam.source_keys.length>0 && roadSeam.source_world_frame.length>=4 && roadSeam.source_world_frame.every(p=>p.length===3 && p.every(Number.isFinite)),'Invalid actual road-seam frame');
+  await goto('?view=atlas&area=all');
+  const roadFrame=roadSeam.source_world_frame;
+  const roadCentre=[0,1,2].map(i=>(Math.min(...roadFrame.map(p=>p[i]))+Math.max(...roadFrame.map(p=>p[i])))/2);
+  const roadFocus=await focusPoint(meta,roadCentre,12,roadFrame);
+  assert(roadFocus.interaction_counts.real_drag_gestures>0 && roadFocus.interaction_counts.zoom_button_clicks>0,'Road seam must use actual mouse drag and zoom buttons');
+  Object.assign(roadFocus,{context_frame_key:roadSeam.key,source_keys:roadSeam.source_keys,frame_method:roadSeam.frame_method,
+    context_road_geometry_sha256:meta.checks.context_roads.output_geometry_sha256.road,context_curb_geometry_sha256:meta.checks.context_roads.output_geometry_sha256.curb});
+  await shot('road-seam','Actual exterior grey-band repair and retained campus-road seam, framed by current native source geometry',roadFocus,true);
   for(const [id,name]of [['N34 academic court','north-court'],['E formal garden plaza','formal-court'],['M field pedestrian wedge','middle-court']]){
     const r=meta.checks.landscape_detail.courtyards.sites.find(r=>r.source_id===id),b=r.source_world_bounds;
-    await inspect(name,r.region,[b[0]-5,b[2]+5,b[1]-5,b[3]+5,b[4],b[4]+16],'Original '+id+' footprint, inset perimeter/cross paving courses, retained planting and roof exclusions');
+    if(name==='formal-court'){
+      const lo=[Math.min(b[0],...formal.map(s=>s.world_bounds_m[0][0])),Math.min(b[1],...formal.map(s=>s.world_bounds_m[0][1])),Math.min(b[4],...formal.map(s=>s.world_bounds_m[0][2]))];
+      const hi=[Math.max(b[2],...formal.map(s=>s.world_bounds_m[1][0])),Math.max(b[3],...formal.map(s=>s.world_bounds_m[1][1])),Math.max(b[4]+16,...formal.map(s=>s.world_bounds_m[1][2]))];
+      await goto('?view=atlas&area='+r.region);
+      const frame=frameFromBounds([lo[0]-5,hi[0]+5,lo[1]-5,hi[1]+5,lo[2],hi[2]]);
+      const focus=await focusPoint(meta,lo.map((v,i)=>(v+hi[i])/2),12,frame);
+      focus.retained_formal_beds=formal.map(s=>({source_key:s.source_key,world_bounds_m:s.world_bounds_m}));
+      await shot(name,'Both retained formal beds within the original formal courtyard footprint and surrounding source paving courses',focus);
+    }else await inspect(name,r.region,[b[0]-5,b[2]+5,b[1]-5,b[3]+5,b[4],b[4]+16],'Original '+id+' footprint, inset perimeter/cross paving courses, retained planting and roof exclusions');
   }
   for(const [ids,name,region] of [[['M01','M02','M03'],'facade-middle','middle'],[['E21','E24','E26','E27'],'facade-extension','extension']]){
     await goto('?view=atlas&area='+region);
@@ -141,5 +170,7 @@ async (page) => {
   assert(Math.max(...projected.map((v,i)=>Math.abs(v-point.actual[i])))<1.2,'Re-exported source gate screen position');
   checks.push({point_refresh:'place:gate3',max_error_px:Math.max(...projected.map((v,i)=>Math.abs(v-point.actual[i])))});
   assert(errors.length===0,'Page/console errors: '+errors.join(','));
+  assert(captures.length===13 && new Set(captures.map(r=>r.path)).size===13,'Bounded thirteen-capture manifest differs');
+  assert(captures.some(r=>r.path==='output/playwright/landscape-road-seam.jpg') && !captures.some(r=>r.path==='output/playwright/landscape-formal-beds.png'),'Current seam capture must replace only the duplicate active formal-beds view');
   return {status:'passed',image_sha256:meta.image_sha256,source_hashes:meta.sources,captures,checks,errors,limits:'Bounded current-image and source-point integration; no claim of entire source website parity, physical device, routing or every historical feature rerun.'};
 }

@@ -60,7 +60,7 @@ from bpy_extras.object_utils import world_to_camera_view
 sys.dont_write_bytecode=True;sys.path.insert(0,'/tmp/taihu-gis-deps');sys.path.insert(0,str(ROOT/'scripts'))
 from shapely.geometry import Polygon,Point,LineString,box
 from shapely.ops import unary_union
-sourcepaths=['scripts/campus_study.py','scripts/north_study.py','scripts/lake_study.py','scripts/campus_atlas.py','scripts/export_atlas.py','scripts/refine_buildings.py','model/campus/campus.blend','model/campus/layout.json','model/campus/roads.json','model/campus/references/satellite.jpg','model/campus/references/satellite-export.json','model/central-campus/footprints.json','model/central-campus/references/satellite.jpg','model/central-campus/references/satellite-export.json','model/central-campus/references/campus-aerial.jpg','model/central-campus/references/lake-photo.jpg']
+sourcepaths=['scripts/campus_study.py','scripts/context_roads.py','scripts/north_study.py','scripts/lake_study.py','scripts/campus_atlas.py','scripts/export_atlas.py','scripts/refine_buildings.py','model/campus/campus.blend','model/campus/layout.json','model/campus/roads.json','model/campus/references/satellite.jpg','model/campus/references/satellite-export.json','model/campus/references/north-extension.json','model/central-campus/footprints.json','model/central-campus/references/satellite.jpg','model/central-campus/references/satellite-export.json','model/central-campus/references/campus-aerial.jpg','model/central-campus/references/lake-photo.jpg']
 sources={p:sha(ROOT/p) for p in sourcepaths}
 CACHE.mkdir(parents=True,exist_ok=True)
 assert capacity()-size(CACHE/'campus.png')-size(CACHE/'atlas.json')+9*1024**2<192*1024**2
@@ -184,11 +184,48 @@ assert unary_union(ground_regions).symmetric_difference(ground_display).area<1e-
 # Consolidate traced road surfaces, clipping sports, roofs, water and site scope.
 traced=[LineString([(gp(p).x,gp(p).y) for p in r[1]]).buffer(r[2]/2,join_style='round') for r in D['roads']]
 road=unary_union([*traced,n['roads'],c['road']]).intersection(roi).difference(allroof.buffer(.25)).difference(allwater.buffer(4.85)).difference(n['sportmask'].buffer(.4))
+road_curbs=road.buffer(.25).difference(road).difference(allroof).difference(allwater.buffer(4.85)).intersection(roi)
+from context_roads import clean_context_roads,verify_context_meshes
+context_source_ground=unary_union([nshape(r['outline']) for r in D['surfaces'] if r['kind']=='ground' and r.get('source','satellite')=='satellite'])
+context_names=D['landscape']['source_context_road_names']
+context_traces=[{'name':row[0],'width_m':row[2],
+    'points_world':[(gp(p).x,gp(p).y) for p in row[1]],'footprint':footprint}
+    for row,footprint in zip(D['roads'],traced)]
+def context_gate_position(row):
+    if row.get('source','satellite')=='satellite':return tuple(gp(row['position']))[:2]
+    assert row['source']=='north-extension'
+    extent=json.loads((ROOT/'model/campus/references/north-extension.json').read_text())['extent']
+    x,y=row['position']
+    return tuple(Vector(((extent['xmin']+x/1000*(extent['xmax']-extent['xmin'])-n['ox'])*n['cs'],
+                         (extent['ymax']-y/900*(extent['ymax']-extent['ymin'])-n['oy'])*n['cs'],0)))[:2]
+def context_tree_inventory():
+    return {ob.name:[ob.type,ob.hide_render,[list(row) for row in ob.matrix_world]] for ob in s.objects
+        if (ob.name.startswith('Canopy ') and ob.name[7:].isdigit()) or
+        ob.name.startswith(('Study source tree ','Lake source branched tree ','Joined source context tree '))}
+bpy.context.view_layer.update()
+context_trees_before=context_tree_inventory()
+road,road_curbs,context_road_checks=clean_context_roads(road,road_curbs,ground=context_source_ground,
+    source_roads=[row for row in context_traces if row['name'] in context_names],
+    protected_roads=[row for row in context_traces if row['name'] not in context_names],
+    gates=[{'id':row['id'],'source':row.get('source','satellite'),'world_xy':context_gate_position(row)} for row in D['gates']])
 roadmat=n['mat']('Joined quiet grey asphalt',(.115,.13,.115));n['texture'](roadmat,(.085,.10,.09),(.15,.165,.145),18,.012)
 for ob in s.objects:
     if ob.name.startswith(('Study asphalt','Study road curbs','Atlas road surface','Atlas road edge')):ob.hide_render=True
-n['surface']('Joined continuous source roads',road,.35,roadmat)
-n['surface']('Joined continuous road curbs',road.buffer(.25).difference(road).difference(allroof).difference(allwater.buffer(4.85)).intersection(roi),.38,curb)
+context_road_mesh=n['surface']('Joined continuous source roads',road,.35,roadmat)
+context_curb_mesh=n['surface']('Joined continuous road curbs',road_curbs,.38,curb)
+bpy.context.view_layer.update()
+context_road_checks['mesh_verification']=verify_context_meshes(road,road_curbs,
+    {ob.name:[[[float(value) for value in ob.matrix_world@ob.data.vertices[i].co] for i in face.vertices]
+               for face in ob.data.polygons] for ob in [context_road_mesh,context_curb_mesh]})
+context_trees_after=context_tree_inventory()
+assert context_trees_before==context_trees_after and context_trees_before
+context_road_checks['tree_preservation']={
+    'source_crown_object_count_before':len(context_trees_before),
+    'source_crown_object_count_after':len(context_trees_after),
+    'original_crown_objects_pose_and_visibility_preserved':True,
+    'pose_visibility_sha256':hashlib.sha256(json.dumps(sorted(context_trees_before.values(),key=repr),
+        separators=(',',':')).encode()).hexdigest(),
+    'scope':'Exact per-object crown type/world-matrix/hide_render equality across the two road/curb mesh constructions; canonical value hash omits object allocation names. No generic crown mesh/UV/material audit is claimed.'}
 # Ground detail pass. Each new finish is clipped to an observed site area;
 # dimensions of paving courses and parking markings remain illustrative.
 site_exclusions=allroof.buffer(.30).union(allwater.buffer(4.85)).union(road.buffer(.28)).union(n['sportmask'].buffer(.20))

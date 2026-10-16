@@ -19,8 +19,8 @@
     "bytes": 335544320,
     "single_file_bytes": 52428800
   },
-  "file_count": 198,
-  "file_bytes": 275189419,
+  "file_count": 200,
+  "file_bytes": 275392477,
   "files": [
     {
       "path": ".gitattributes",
@@ -42,9 +42,9 @@
     },
     {
       "path": "README.md",
-      "bytes": 66398,
-      "sha256": "53c571989eec44723699a91f84e7ec0010a632082f3fc6bf2dc987b4e9e54a2f",
-      "git_blob_sha1": "9cd1ac7404afecf531ab91f11c044df84a94495e"
+      "bytes": 67778,
+      "sha256": "f2e10bee5aa09da36396dd2354c66e5684e4416ad48dc81ba9b9dfbc968bbd26",
+      "git_blob_sha1": "c1f330de32a84d3688f719426bae2e7bd033a97b"
     },
     {
       "path": "index.html",
@@ -582,33 +582,33 @@
     },
     {
       "path": "output/playwright/landscape-comparison.webp",
-      "bytes": 818338,
-      "sha256": "dd0715edc1c1066ed04f8ec6ffbeafd7a2d34fe07ca6863f6dd7dcb77751aafd",
-      "git_blob_sha1": "5cedaca317d33c174ba2460518f46eeb42843cc4"
+      "bytes": 789582,
+      "sha256": "ee6fe9e380322249c85f116c81dc29365048268e43abb407fa5c417c61c0122a",
+      "git_blob_sha1": "668553e10738a2cfb8339c2431ac91ed47b729d5"
     },
     {
       "path": "output/playwright/landscape-dining.png",
-      "bytes": 1301456,
-      "sha256": "3b2005a040cf0e70d15f0e328dbd6130564b35540cc129f75d66380609428f28",
-      "git_blob_sha1": "fafecb1a03f9b8e3d641b7502d9075316783770c"
+      "bytes": 1302609,
+      "sha256": "7978dceaee36c55711b55c1454683d592487866f14575b926ccb7ced7a536c36",
+      "git_blob_sha1": "faddb21bf5582880b7c7c55d930dfc7c4df6254b"
     },
     {
       "path": "output/playwright/landscape-east-rows.png",
-      "bytes": 1000605,
-      "sha256": "a0d333b9f330049abd2f62f1af5c2c702e90cc877e0610b9ebebce59e6cdb1fd",
-      "git_blob_sha1": "5787e5b27aef0bec8cb322fa6644925d6b3574ec"
+      "bytes": 1001301,
+      "sha256": "7dbce1097f8e063c3821df5d7bc74ca7cd86708f5d264fcf258e52ba1f39ba7c",
+      "git_blob_sha1": "610926c0cbed4fc205b4c1cd55d81bc318a310b1"
     },
     {
       "path": "output/playwright/landscape-facade-extension.jpg",
-      "bytes": 204790,
-      "sha256": "749141e220e0d0552446a2e03ad3c0b087bcafb1e62a038b25af44761efecbef",
-      "git_blob_sha1": "ab49231d6e6269afc2c6ba04334511499803e4ac"
+      "bytes": 204810,
+      "sha256": "eef869b18d9c6e7912b67254d642fe987b1af0b23f70a1fc53cc69ec1b58dc4d",
+      "git_blob_sha1": "d4a68d998889bb3203929f04628550fb7ec17443"
     },
     {
       "path": "output/playwright/landscape-facade-middle.jpg",
-      "bytes": 158415,
-      "sha256": "9762d48768662da3da48f6d668678c2162c9315fe539fad274ad1c6401deb233",
-      "git_blob_sha1": "ea655d80862a201851de8646271080a3165e0f35"
+      "bytes": 159913,
+      "sha256": "bcb9526e1b958dc98a7fc497a78627cb77b62ff988c6f8912e40c6bd34a63df1",
+      "git_blob_sha1": "e1a43b77b28dc4bf3eb1236cb0507d103e281c61"
     },
     {
       "path": "output/playwright/landscape-formal-beds.png",
@@ -618,63 +618,69 @@
     },
     {
       "path": "output/playwright/landscape-formal-court.png",
-      "bytes": 980934,
-      "sha256": "2d2d8c3df5e4e65078420e7f08e3422b9e271764bda65a0b19d683b8779577a9",
-      "git_blob_sha1": "3758b95b4f50db1e455d1ddeacee95bc619b8b6f"
+      "bytes": 981089,
+      "sha256": "5f0f59c5acd8571740f46064885fbec18020f4cdaeaacc39f4256e1506b47594",
+      "git_blob_sha1": "a85e86d4e52e44bdcfe580bfdd43c19dccc6962a"
     },
     {
       "path": "output/playwright/landscape-island.png",
-      "bytes": 1039212,
-      "sha256": "b05c9005d752967835ff3d767218955d31678144cdaa3a82e5f038f48b8498cb",
-      "git_blob_sha1": "528a4ec993e798d83c6c136f17193c3b8e7c4d81"
+      "bytes": 1037639,
+      "sha256": "3079a80684364954653b3a449b8d4bfd1232c0cb83e8bfa1733168008fc1e2b0",
+      "git_blob_sha1": "709ae1a4cd9ee81c72ab0b5212f9158d82d63893"
     },
     {
       "path": "output/playwright/landscape-middle-court.png",
-      "bytes": 802489,
-      "sha256": "7cc0c7cdf801de450a22557dc68c6ce0872f2a4e8573da4b04e2c87a45fffba7",
-      "git_blob_sha1": "5975aa06738341f02f1b6e6a1d9304ec8d693e33"
+      "bytes": 803415,
+      "sha256": "ba6ff562954846c644b9d7b299e93a4766744733ce4253ef67cefe64ad4ea205",
+      "git_blob_sha1": "196070a270611c15a1ca757f0a9b803420df4398"
     },
     {
       "path": "output/playwright/landscape-mobile.png",
-      "bytes": 262964,
-      "sha256": "b7b2a7df3f9e496fc2eb5653e717dbc825e631a523be7c02ecad86585be70630",
-      "git_blob_sha1": "c54339873a2f2a75541bb93cddae1747e8e9779b"
+      "bytes": 270566,
+      "sha256": "c96012a12dff368bedb61440b6693432c02b51c01ad085d5c8ba12dc943d4be1",
+      "git_blob_sha1": "5698e3808060a0d58945ebf5011804504ca6d949"
     },
     {
       "path": "output/playwright/landscape-north-court.png",
-      "bytes": 918029,
-      "sha256": "87f374ed7128954eb74c35ace281c6c695f5321579bfe03363827e00922ce0fe",
-      "git_blob_sha1": "6097bea47825f4f939e6db923032516951b27ee3"
+      "bytes": 917089,
+      "sha256": "6d1e5639fcc60ea96b678378ffad2a47cfaf2735c2cd45e133377c2665c56c93",
+      "git_blob_sha1": "f0ce38d02d860650c24ef328f8898d8ca64836f8"
     },
     {
       "path": "output/playwright/landscape-overview.png",
-      "bytes": 718646,
-      "sha256": "7ec895e38e6e51329f2ebb55f5a5c600cb6c3da6eba149f36ae3c0281f72ea62",
-      "git_blob_sha1": "08540bad0fa333bfdecd816e2f7a3e3e36071822"
+      "bytes": 718802,
+      "sha256": "d536251f304fc2bc198a22ef4ceb489307276a4dee6bc49e28568259406203e0",
+      "git_blob_sha1": "9959654475886dbd466275bd52e7de9831bb5113"
     },
     {
       "path": "output/playwright/landscape-planting-north.jpg",
-      "bytes": 176415,
-      "sha256": "bec1b7ed327dc21f5eba68b8a0b90632c760ca216f8810cd124251a75479f955",
-      "git_blob_sha1": "50c6c3f49624615043433074429a56ed4b758f4a"
+      "bytes": 176478,
+      "sha256": "1548f6012b4907ab84a914e29fb7bda023aa7b4cb34bd0f4e45ba31a20cc06a8",
+      "git_blob_sha1": "ce6a75e9db801bd70cc37c262da548e089ec0def"
+    },
+    {
+      "path": "output/playwright/landscape-road-seam.jpg",
+      "bytes": 146452,
+      "sha256": "6e4d85721a7cee60bbc265a0123c1497e208b0789335d29857c84ce0f38c76bb",
+      "git_blob_sha1": "9d8067db43252bc135066b848ee0b92006f286e4"
     },
     {
       "path": "output/playwright/landscape-south.png",
-      "bytes": 1245768,
-      "sha256": "0b169a0a64015a67a8f3e03bbfe346c6bb910b3ae34cdd2738432558c60c086e",
-      "git_blob_sha1": "d91a13ba2d998e86ad87dae56bcc8631714fc3d6"
+      "bytes": 1245460,
+      "sha256": "141a9b081fdd2d92e26e191216d29a7c84a71a55785619fdae6e5642d41b9ae0",
+      "git_blob_sha1": "4bc2d027a224a1e356abf62aa2a60c2eed9ed113"
     },
     {
       "path": "output/playwright/landscape.json",
-      "bytes": 57533,
-      "sha256": "7261a412aba3831f4bb0952a3f0f7ff569405c4b514a55725eef6ce007f93650",
-      "git_blob_sha1": "19363045133414d18661b5a87bf9c05dafd3c1ae"
+      "bytes": 66831,
+      "sha256": "a058ff15176e490d0ca7ff63b4a3662da807328ded63db00e16c3c5239dd0ee8",
+      "git_blob_sha1": "ffcaf546cd3cab7223ef5894ecec07d39c49502c"
     },
     {
       "path": "output/playwright/landscape.md",
-      "bytes": 14369,
-      "sha256": "01883e4d18fa660565017551fbafdbfe545bf34dc662623cb1adb4c66aad9286",
-      "git_blob_sha1": "e795dac9b77eebe806c28dbe0748147da11aeca0"
+      "bytes": 19504,
+      "sha256": "87dbb215ba43f3e3f9c43c95353d606131c7fa8820bb8b09359a3cd8862e241b",
+      "git_blob_sha1": "a3e3a8824f383a670feec9b202738e99c2efbbd0"
     },
     {
       "path": "output/playwright/library-direct-vr.png",
@@ -870,15 +876,15 @@
     },
     {
       "path": "public/assets/campus-atlas.json",
-      "bytes": 1569158,
-      "sha256": "5244b54a000f82fd60b54b3320bcb287efda3b46b223b28d4f12252e6bb45e63",
-      "git_blob_sha1": "c9ce05a061102f5160749262292b4b9bdaba8471"
+      "bytes": 1591289,
+      "sha256": "69c4e2a6e5e15ee2e1498990f1c72891144106b7cdecf999e088e314625231d0",
+      "git_blob_sha1": "9b57d5e10a45536a6b26975b34f30a0a3527ca31"
     },
     {
       "path": "public/assets/campus-atlas.webp",
-      "bytes": 2409920,
-      "sha256": "8c0a275cc20a0013da4e7032083381f8e221fea3b47116aa2ddbc2e53561db49",
-      "git_blob_sha1": "d4485aed3e1f73a81b2c854d55e39444d8a2f233"
+      "bytes": 2409342,
+      "sha256": "89a3bd1bb7f2c309ce8499152a7a299a1e6db76e5e4a0d97a0c29864dec4b7d3",
+      "git_blob_sha1": "9a9e8ad69a800abbf6502ca50ceb23c6e2c4750c"
     },
     {
       "path": "public/assets/campus-lake.json",
@@ -954,21 +960,21 @@
     },
     {
       "path": "scripts/campus_expansion.py",
-      "bytes": 169363,
-      "sha256": "a1ad32b99edf07b5a6e271c8bceb0151138b77ec6ff500e4ff39066dd26c2743",
-      "git_blob_sha1": "0206f245f271967c0f88d983467ddf39c810214b"
+      "bytes": 169596,
+      "sha256": "50e3e4ddcce1886caa3ebcd47a3af2b9bd46dadf940f4c8115874c2394e02f63",
+      "git_blob_sha1": "c86090b615d9280d783ace73ea43f4fbdd243593"
     },
     {
       "path": "scripts/campus_expansion_export.py",
-      "bytes": 11426,
-      "sha256": "ff2df356eb59894bb46c61a03c5b38f8116ab2d4f496425be1a2f889e9d25c49",
-      "git_blob_sha1": "62ef5c7b953bd869522805d4e33dd9456903d0f1"
+      "bytes": 11460,
+      "sha256": "5137f20d61f3f73dc98a863e3cb38af8369f0cb3a99ae151af831d0eddec354d",
+      "git_blob_sha1": "103f357fac66cf0c3bd95f179fa1b3dbde3eee17"
     },
     {
       "path": "scripts/campus_study.py",
-      "bytes": 32947,
-      "sha256": "e662d7882f4af8555945d4009c34aea2d74088bcba883f1684026070f1c14c3f",
-      "git_blob_sha1": "5cccef8b105be28b37f6a4443284f36c77043991"
+      "bytes": 35869,
+      "sha256": "75e3c7f67625983d8b603d101527b6dbf80ba2651adbda134a44cd9c98a123b0",
+      "git_blob_sha1": "0ccf82ee44e3f9fbc34dfd022941072f3ef5ca4b"
     },
     {
       "path": "scripts/canopy_volume.py",
@@ -978,9 +984,15 @@
     },
     {
       "path": "scripts/compare_landscape_atlas.py",
-      "bytes": 15890,
-      "sha256": "1bda77fcb576aac0aeb738b0d163e7726fb7957d3af5a686371ba1f4cbd856ff",
-      "git_blob_sha1": "77a3faeead7e4e7c4512b4f0e32c25805033d920"
+      "bytes": 16124,
+      "sha256": "bc9fcc4f248594bf21bada26e633e756b46064a8a2ed7bde15cdc6d6e426814e",
+      "git_blob_sha1": "feb617266bfb8d54baa795d455681f6822b5e9ec"
+    },
+    {
+      "path": "scripts/context_roads.py",
+      "bytes": 14390,
+      "sha256": "302e85b7a87b66cd6ca7e5cc514ed3f67312decfd27591919f9cf5cdbbdb911d",
+      "git_blob_sha1": "c5239296671f8f77a5e7c63d0b8185b6292474c0"
     },
     {
       "path": "scripts/courtyard_finish.py",
@@ -1032,9 +1044,9 @@
     },
     {
       "path": "scripts/hardscape_transition.py",
-      "bytes": 16794,
-      "sha256": "c2e7c4e70f4d7480d184ab714679c3843c3e8f67cb7ae816a59d992ba3e48bb1",
-      "git_blob_sha1": "0b739d26c43aeb617dc6855491f11f67bc2d36b0"
+      "bytes": 16620,
+      "sha256": "0c35c0c5960c37ade8da3f3de8a8d143c628491717f38434734ede7f99f63dbc",
+      "git_blob_sha1": "f5226fe094caee8da32b7461d46788702bec8e1c"
     },
     {
       "path": "scripts/lake_study.py",
@@ -1080,27 +1092,27 @@
     },
     {
       "path": "scripts/promote_full_atlas.py",
-      "bytes": 52928,
-      "sha256": "80c7850b7ec228e5e65e55de4a02b84e643c1e5a59279e8812d6cb2f9f59e78b",
-      "git_blob_sha1": "bc219599c0f54593870c424542d1dd462823b76b"
+      "bytes": 60791,
+      "sha256": "1d77728237680a44bb01fba5763039a6b95ac0f4287ca6e55f7883a5903428d7",
+      "git_blob_sha1": "036c272f1ad4cd5dc2c986baf890fe4421bec26d"
     },
     {
       "path": "scripts/promote_north_pilot.py",
-      "bytes": 7434,
-      "sha256": "8ee801ae4730d8b16a7450a6d16a00b7e41d77f4c6919797d37902b5f6dcfa98",
-      "git_blob_sha1": "1c661b690807a702f7d0719e563dff9b37082319"
+      "bytes": 7462,
+      "sha256": "54ba4e603bf05bb78888bac980476899b59e73091452c9f60d6ef7047fe49d5e",
+      "git_blob_sha1": "ec4ddcd097b902e15beb714cce4795acf34dae79"
     },
     {
       "path": "scripts/qa_landscape_atlas.js",
-      "bytes": 13041,
-      "sha256": "2e1aa431907d71f920fe44f36659eb6f96a31323913344521128e70b311b68b3",
-      "git_blob_sha1": "11e05e0ff4f8521949fc37ea2aa0bd7112cc14ec"
+      "bytes": 16813,
+      "sha256": "2611e43d26999a7484d8915a3ea93b432aa6fb3efe066edcfa91b88d26a93119",
+      "git_blob_sha1": "98b1d54fc65f5a1e13b54bd9395e8c6867e4c32d"
     },
     {
       "path": "scripts/qa_landscape_atlas.py",
-      "bytes": 4457,
-      "sha256": "13177e41ba839837a326cf3b33ac8dd599589f26dd5313ba05788657d243f5ec",
-      "git_blob_sha1": "8d4658eac35541b21f666b2f4dd8a621ce42c6fe"
+      "bytes": 4485,
+      "sha256": "599296bb9c14b4042298328d40a97e2a1836de46fb3218da07fdae96324c8032",
+      "git_blob_sha1": "cacf15f806ce96a451b2c9a58b6696422702bf4a"
     },
     {
       "path": "scripts/refine_buildings.py",
@@ -1110,9 +1122,9 @@
     },
     {
       "path": "scripts/seal_landscape_atlas.py",
-      "bytes": 16049,
-      "sha256": "5532dfc2d7cd8973b93de78214526b57a2a9083e2de1aaed63206a33314a4118",
-      "git_blob_sha1": "008c7a86cad2b6c614f58f0e8594978483c7eed7"
+      "bytes": 16327,
+      "sha256": "7e6b300c588f6bedafc2f61b987889b9254ae00beb1a831c29e57b9941cf16e1",
+      "git_blob_sha1": "200b19a13cb2d618681beba3e4b453012bfe7bd0"
     },
     {
       "path": "scripts/verify_backup.py",
@@ -1122,9 +1134,9 @@
     },
     {
       "path": "scripts/verify_landscape_atlas.py",
-      "bytes": 12467,
-      "sha256": "21eb624e14fb38a6b1741fbc8c2f690df16a9c7caf8c9525ba91a98d7a694ae1",
-      "git_blob_sha1": "25296287a97120163a4a122bd5376472302484f3"
+      "bytes": 15965,
+      "sha256": "2b9443138d5381fbf2ffe60ffd6e4c0c4f3c1e5f894992ddcde645b72bb20726",
+      "git_blob_sha1": "337ddeffc1fab9206aa5415ebe89b65d56623db4"
     },
     {
       "path": "src/App.jsx",
@@ -1200,15 +1212,15 @@
     },
     {
       "path": "恢复说明.md",
-      "bytes": 8653,
-      "sha256": "2d4ea190890bc54de07ecb2df3a66edcea40fa38c294e4445f27021a0773f346",
-      "git_blob_sha1": "c4c1804fded188584824cc9fe3180d0e7bd319c3"
+      "bytes": 9096,
+      "sha256": "1c822e6fa276befdd84615c23c489522c1c8b21a3d01f2548dc68673099e000d",
+      "git_blob_sha1": "0157484b79077d11fc5a05c3a5951fec1a136252"
     },
     {
       "path": "进度.md",
-      "bytes": 173199,
-      "sha256": "0c6e4fe567aee969918b97f9e39049ab79071b45eb6d279b7385eb981e3b23b0",
-      "git_blob_sha1": "3e901d9914dd5cde5efe099059a28e05e999756b"
+      "bytes": 178198,
+      "sha256": "4bc83d4e5a67522f4b3c06a7212ccb9c81c5643e065c01a185ec81d8c7fae2b3",
+      "git_blob_sha1": "66204ea405690442c85293304c966a21e65a362e"
     }
   ]
 }
