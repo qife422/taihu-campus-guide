@@ -19,6 +19,69 @@ ASSET_NAMES = (
     'campus-reference.webp', 'campus-lake.webp', 'campus-lake.json',
     'campus-study.webp', 'campus-study.json', 'campus-atlas.webp',
 )
+PROOF_EXCLUSIONS = {
+    'landscape_detail': (
+        'surface.existing_visible_mesh_sha256', 'beds.per_construction_preservation',
+        'courtyards.other_existing_visible_mesh_sha256'),
+    'site_finish': (
+        'facade.other_scene_meshes_sha256',
+        'hardscape.all_existing_mesh_geometry_uv_pose_visibility_sha256',
+        'hardscape.original_material_slot_assignment_sha256',
+        'hardscape.final_material_slot_assignment_sha256',
+        'planting.per_construction_preservation'),
+    'paving_regularization': ('edge.per_construction_preservation',),
+}
+
+
+def canonical_digest(value) -> str:
+    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
+        separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+
+
+def construction_core(meta: dict, name: str) -> tuple[dict, dict]:
+    """Retain exact recipe/geometry checks; extract only declared per-run guards."""
+    value = ({'geometry': meta['checks']['paving_regularization'],
+              'edge': meta['checks']['paving_edge_finish']}
+             if name == 'paving_regularization' else meta['checks'][name])
+    core = json.loads(json.dumps(value, allow_nan=False))
+    protection = {}
+    for path in PROOF_EXCLUSIONS[name]:
+        branch = core
+        for key in path.split('.')[:-1]:
+            branch = branch[key]
+        key = path.split('.')[-1]
+        assert key in branch, ('Missing declared construction guard', name, path)
+        protection[path] = branch.pop(key)
+    return core, protection
+
+
+def validate_construction_proof(meta: dict, proof: dict, name: str) -> None:
+    core, protection = construction_core(meta, name)
+    assert proof['status'] == 'passed'
+    assert proof['constructions'] == ['middle_diagnostic', 'native_full']
+    assert proof['source_collection_sha256'] == canonical_digest(meta['sources'])
+    assert proof['excluded_from_cross_construction_equality'] == list(PROOF_EXCLUSIONS[name])
+    assert proof['core_sha256']['middle_diagnostic'] == proof['core_sha256']['native_full'] == canonical_digest(core)
+    assert proof['per_construction_protection']['native_full'] == protection
+
+
+def shared_budget(meta: dict) -> bytes:
+    """Measure the final compact JSON, including every added proof, before writing."""
+    paths = sorted(set(meta['budget'].get('source_amplification_basis', [])) |
+        {path for path in meta['sources'] if path.endswith('.py')} |
+        {'src/CampusAtlas.jsx', 'src/campusAtlas.css', 'scripts/promote_full_atlas.py',
+         'scripts/verify_landscape_atlas.py', 'scripts/seal_landscape_atlas.py'})
+    source_bytes = sum((ROOT / path).stat().st_size for path in paths)
+    binaries = sum(row['bytes'] for row in meta['artifact_manifest'])
+    for _ in range(8):
+        total = binaries + len(encoded(meta))
+        meta['budget'].update({'asset_count_actual': 10, 'asset_bytes_actual': total,
+            'source_amplification_actual': round(total / source_bytes, 2),
+            'source_amplification_basis': paths})
+    payload = encoded(meta)
+    assert binaries + len(payload) == meta['budget']['asset_bytes_actual'] < LIMIT
+    assert (binaries + len(payload)) / source_bytes < 256
+    return payload
 
 
 def sha(data: bytes) -> str:
@@ -164,6 +227,8 @@ def validate_site_sources(candidate: dict) -> None:
     assert len({row['material'] for row in finish['material_recipes']}) == finish['new_material_count']
 
     transition = site['hardscape']
+    assert transition['new_material_count'] == len(transition['recipes']) == 5
+    assert len({row['source_material'] for row in transition['recipes']}) == 5
     spatial = candidate['checks']['spatial_continuity_and_scale']
     assert transition['outer_field_rgba_float32_sha256'] == spatial['field_rgba_float32_sha256']
     assert transition['outer_field_size'] == spatial['field_size']
@@ -197,6 +262,85 @@ def validate_site_sources(candidate: dict) -> None:
     assert len(planting['batches']) == 2
     assert planting['total_polygon_triangle_count'] == sum(
         row['polygon_triangle_count'] for row in planting['batches'])
+
+
+def validate_paving_regularization(candidate: dict) -> None:
+    """Verify the early planar cleanup without inventing Blender mesh claims."""
+    check = candidate['checks']['paving_regularization']
+    assert check['status'] == 'passed'
+    assert check['source_building_ids'] == [f'M{i:02}' for i in range(1, 8)]
+    assert 'scripts/paving_cleanup.py' in candidate['sources']
+    assert check['opening_radius_m'] == 1.20 and check['window_margin_m'] == 12.0
+    assert check['road_building_contact_width_m'] == 2.0
+    assert check['source_tree_protection_radius_m'] == 1.10
+    assert check['source_hole_edge_protection_width_m'] == 1.20
+    assert check['window_seam_width_m'] == 2.4
+    for key in ('input_area_m2', 'output_area_m2', 'candidate_input_area_m2',
+                'protected_candidate_area_m2', 'eligible_candidate_area_m2',
+                'removed_area_m2', 'removed_candidate_fraction',
+                'boundary_hausdorff_distance_m'):
+        assert math.isfinite(check[key]) and check[key] >= 0, key
+    area = check['candidate_input_area_m2']; removed = check['removed_area_m2']
+    assert area > 200 and check['input_area_m2'] >= area
+    assert check['removed_area_minimum_m2'] == 1.0
+    assert check['removed_area_limit_m2'] == min(area * .03, 100.0)
+    assert 1.0 <= removed <= check['removed_area_limit_m2']
+    assert abs(check['removed_candidate_fraction'] - removed / area) < 1e-12
+    assert check['removed_candidate_fraction'] <= .03
+    assert abs(check['input_area_m2'] - check['output_area_m2'] - removed) < 1e-6
+    assert check['boundary_hausdorff_distance_m'] <= 1.2 + 1e-6
+    for key in ('output_outside_input_area_m2', 'difference_outside_window_area_m2',
+                'protected_loss_area_m2'):
+        assert math.isfinite(check[key]) and 0 <= check[key] < 1e-7, key
+    assert check['component_count_before'] == check['component_count_after'] > 0
+    assert check['hole_count_before'] == check['hole_count_after'] >= 0
+    assert check['each_component_and_its_holes_preserved']
+    assert check['source_geometry_read_only'] and check['ground_under_paving_preserved']
+    contacts = check['protected_source_contacts']
+    assert set(contacts) == {'building_contact', 'road_contact', 'traced_finishes',
+                             'source_tree_roots', 'window_seam', 'original_hole_edges'}
+    hashes = [check[key] for key in ('input_geometry_sha256', 'output_geometry_sha256',
+        'candidate_geometry_sha256', 'removed_geometry_sha256', 'protected_geometry_sha256',
+        'relevant_source_tree_centres_sha256')]
+    assert check['input_geometry_sha256'] != check['output_geometry_sha256']
+    for contact in contacts.values():
+        assert math.isfinite(contact['source_area_m2']) and contact['source_area_m2'] >= 0
+        assert math.isfinite(contact['lost_area_m2']) and 0 <= contact['lost_area_m2'] < 1e-7
+        hashes.append(contact['source_geometry_sha256'])
+    assert all(len(h) == 64 and set(h) <= set('0123456789abcdef') for h in hashes)
+    bounds = check['candidate_world_bounds']
+    assert len(bounds) == 4 and all(math.isfinite(v) for v in bounds)
+    assert bounds[0] < bounds[2] and bounds[1] < bounds[3]
+    edge = candidate['checks']['paving_edge_finish']
+    assert edge['status'] == 'passed' and edge['target'] == 'Expansion paving courses'
+    assert edge['source_material'] == 'Study light stone curb'
+    assert edge['finish_material'] == 'Middle source paving subdued edge'
+    assert edge['candidate_world_bounds'] == bounds
+    assert edge['boundary_fade_m'] == 2.0 and edge['colour_multiplier'] == [.68, .70, .67]
+    assert edge['outside_window_weight'] == 0 and edge['interior_weight'] == 1
+    assert edge['world_position_mask'] and isinstance(edge['source_colour_link_retained'], bool)
+    assert edge['source_nodes_and_other_internal_links_preserved']
+    assert edge['shader_parameters_and_links_read_back']
+    assert edge['other_bsdf_inputs_preserved']
+    assert edge['affected_course_area_m2_estimate'] > 10 and math.isfinite(edge['affected_course_area_m2_estimate'])
+    assert edge['course_height_m'] == .335 and edge['material_slot_count'] == 1
+    assert edge['new_material_count'] == 1 and edge['added_node_count'] == 14
+    assert edge['source_graph_sha256'] != edge['finish_graph_sha256']
+    transition = candidate['checks']['site_finish']['hardscape']
+    targets = [row for row in transition['targets'] if row['object'] == edge['target']]
+    recipes = [row for row in transition['recipes']
+               if row['source_material'] == edge['finish_material']]
+    assert len(targets) == len(recipes) == 1
+    assert targets[0]['source_material'] == edge['finish_material']
+    assert targets[0]['copied_material'] == recipes[0]['copied_material']
+    assert recipes[0]['source_material_graph_sha256'] == edge['finish_graph_sha256']
+    protection = edge['per_construction_preservation']
+    for key in ('scene_geometry_preserved', 'other_materials_preserved',
+                'other_object_material_slots_preserved', 'world_graph_preserved'):
+        assert protection[key], key
+    fingerprints = [edge['source_graph_sha256'], edge['finish_graph_sha256'],
+        protection['scene_geometry_sha256'], protection['other_material_graphs_sha256']]
+    assert all(len(h) == 64 and set(h) <= set('0123456789abcdef') for h in fingerprints)
 
 
 def main() -> None:
@@ -295,6 +439,7 @@ def main() -> None:
         [*lake['geometry_sha256'].values(), lake['shore_attribute_sha256'], lake['material_graph_sha256'],
          lake['other_material_graphs_sha256'], lake['world_graph_sha256'], lake['lighting_sha256']])
     baseline = json.loads((ASSETS / 'campus-atlas.json').read_bytes())
+    assert candidate['checks']['paving_edge_finish']['new_material_count'] == 1
     assert forms == baseline['checks']['canopy_forms']
     if 'lake_surface' in baseline['checks']:
         assert lake == baseline['checks']['lake_surface']
@@ -587,6 +732,8 @@ def main() -> None:
         assert row['outside_source_region_m2_at_float32_tolerance'] < 1e-7
         assert row['outside_support_m2_at_float32_tolerance'] < 1e-7
     validate_site_sources(candidate)
+    validate_paving_regularization(candidate)
+    assert len(candidate['sources']) == 32 and 'scripts/paving_cleanup.py' in candidate['sources']
     assert candidate['camera'] == baseline['camera']
     assert candidate['roof_faces_world'] == baseline['roof_faces_world']
     tree_centres = lambda value: sorted(tuple(row[1]) for row in value['landscape_revision']['tree_pairs'])
@@ -613,8 +760,8 @@ def main() -> None:
         'criteria': ['No roof or camera changes', 'No source-tree world XYZ changes'],
     }
     candidate['visual_review'] = {
-        'status': 'agent_inspected_native_full_render_and_regional_previews',
-        'scope': 'Source-backed north and southern flower-garden craft checked; different-campus geographic parity is not claimed.',
+        'status': 'pending_native_and_browser_visual_review',
+        'scope': 'Promotion validates native inputs; visual inspection and current-image browser evidence are sealed separately.',
         'reference_alignment_status': 'not_met',
     }
     preserve_website_metadata(candidate, baseline)
@@ -624,25 +771,10 @@ def main() -> None:
         for name, data in ((name, image if name == 'campus-atlas.webp' else (ASSETS / name).read_bytes()) for name in ASSET_NAMES)
     ]
     candidate['artifact_manifest_policy'] = 'Current nine shared binary/sidecar assets; this metadata JSON has no recursive self-hash.'
-    source_paths = [
-        'scripts/campus_study.py', 'scripts/north_study.py', 'scripts/north_pilot_detail.py',
-        'scripts/garden_detail.py', 'scripts/lake_study.py', 'scripts/campus_atlas.py',
-        'scripts/export_atlas.py', 'scripts/refine_buildings.py', 'scripts/campus_expansion.py',
-        'scripts/campus_expansion_export.py', 'src/CampusAtlas.jsx', 'src/campusAtlas.css',
-    ]
-    source_bytes = sum((ROOT / name).stat().st_size for name in source_paths)
-    for _ in range(5):
-        total = sum(entry['bytes'] for entry in candidate['artifact_manifest']) + len(encoded(candidate))
-        candidate['budget'].update({
-            'asset_count_actual': 10,
-            'asset_bytes_actual': total,
-            'source_amplification_actual': round(total / source_bytes, 2),
-            'source_amplification_basis': source_paths,
-        })
-    metadata = encoded(candidate)
+    metadata = shared_budget(candidate)
     total = sum(entry['bytes'] for entry in candidate['artifact_manifest']) + len(metadata)
     assert total == candidate['budget']['asset_bytes_actual']
-    assert total < LIMIT and total / source_bytes < 256, (total, LIMIT)
+    assert total < LIMIT, (total, LIMIT)
     assert sum(path.stat().st_size for path in STAGE.rglob('*') if path.is_file()) < 192 * 1024**2
     replace(ASSETS / 'campus-atlas.webp', image)
     replace(ASSETS / 'campus-atlas.json', metadata)

@@ -123,10 +123,10 @@ for line in [json.dumps({'action':'finish'})] if candidate_mode else sys.stdin:
         baseline=json.loads((OUT/'campus-atlas.json').read_text())
         assert m['camera']==baseline['camera'],'Source-projected UI mask needs reprojection after a camera change'
         m['presentation_mask']=dict(baseline['presentation_mask'])
-        m['previous_iteration']={'image_sha256':baseline['image_sha256'],'status':'superseded by facade component finishes, retained planting caps and outer hardscape continuity pass'}
+        m['previous_iteration']={'image_sha256':baseline['image_sha256'],'status':'superseded by bounded middle-campus paving edge regularization; original source inputs retained'}
         other=['campus-north.webp','campus-north.json','campus-north-before.webp','campus-reference.webp','campus-lake.webp','campus-lake.json','campus-study.webp','campus-study.json']
         other_bytes=sum((OUT/p).stat().st_size for p in other)
-        source_bytes=sum((ROOT/p).stat().st_size for p in ['scripts/campus_study.py','scripts/lake_study.py','scripts/north_study.py','scripts/campus_atlas.py','scripts/export_atlas.py','scripts/refine_buildings.py','scripts/campus_expansion.py','scripts/canopy_volume.py','scripts/ground_contact.py','scripts/facade_depth.py','scripts/landscape_beds.py','scripts/courtyard_finish.py','scripts/landscape_surface.py','scripts/facade_finish.py','scripts/hardscape_transition.py','scripts/planting_finish.py','scripts/campus_expansion_export.py','src/CampusAtlas.jsx','src/campusAtlas.css'])
+        source_bytes=sum((ROOT/p).stat().st_size for p in ['scripts/campus_study.py','scripts/lake_study.py','scripts/north_study.py','scripts/campus_atlas.py','scripts/export_atlas.py','scripts/refine_buildings.py','scripts/campus_expansion.py','scripts/canopy_volume.py','scripts/ground_contact.py','scripts/facade_depth.py','scripts/landscape_beds.py','scripts/courtyard_finish.py','scripts/landscape_surface.py','scripts/facade_finish.py','scripts/hardscape_transition.py','scripts/planting_finish.py','scripts/paving_cleanup.py','scripts/campus_expansion_export.py','src/CampusAtlas.jsx','src/campusAtlas.css'])
         for quality in (91,89,87,85,83):
             b=io.BytesIO();canvas.save(b,format='WEBP',quality=quality,method=6);payload=b.getvalue()
             m['image_sha256']=hashlib.sha256(payload).hexdigest();m['image_bytes']=len(payload);m['webp_quality']=quality

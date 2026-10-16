@@ -9,13 +9,64 @@ import json
 import math
 
 from PIL import Image
-from promote_full_atlas import validate_site_sources
+from promote_full_atlas import (canonical_digest, validate_construction_proof,
+    validate_paving_regularization, validate_site_sources)
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def validate_evidence(meta, qa):
+    """Read current files and source bindings; never transplant a prior QA pass."""
+    assert qa['status'] == 'passed' and not qa['errors'] and len(qa['captures']) == 13
+    assert qa['image_sha256'] == meta['image_sha256']
+    assert qa['source_hashes'] == meta['sources']
+    assert len({row['path'] for row in qa['captures']}) == 13
+    for path in ('scripts/promote_full_atlas.py', 'scripts/verify_landscape_atlas.py',
+                 'scripts/seal_landscape_atlas.py', 'scripts/paving_cleanup.py'):
+        assert path in qa['source_sha256'], ('Unbound current consumer', path)
+    for name in ('frontend_validation', 'website_frontend_validation'):
+        parent = meta[name]
+        assert parent['status'] == 'passed' and parent['image_sha256'] == meta['image_sha256']
+        assert parent['alignment_status'] == 'not_met' and parent['captures'] == len(qa['captures'])
+        assert parent['source_sha256'] == qa['source_sha256']
+        assert parent['evidence_manifest'] == meta['frontend_validation']['evidence_manifest']
+    assert hashlib.sha256(qa['script_source'].encode()).hexdigest() == qa['script_sha256']
+    for path, fingerprint in qa['source_sha256'].items():
+        assert sha(ROOT / path) == fingerprint, path
+    for record in qa['captures']:
+        path = ROOT / record['path']
+        assert sha(path) == record['sha256'] and path.stat().st_size == record['bytes']
+        assert record['image_sha256'] == record['formal_image_sha256'] == meta['image_sha256']
+        assert record['places_image_sha256'] == meta['image_sha256']
+        assert record['natural_size'] == [7168, 3072]
+        assert record['roof_hotspots'] == 130 and record['source_points'] == 7 and not record['overflow']
+    comparison = qa['native_comparison']
+    assert comparison['script'] == 'scripts/compare_landscape_atlas.py'
+    assert sha(ROOT / comparison['script']) == comparison['script_sha256']
+    assert comparison['input_image_sha256'] == {
+        'before': meta['previous_iteration']['image_sha256'], 'current': meta['image_sha256']}
+    assert comparison['input_source_collections']['current'] == meta['sources']
+    assert canonical_digest(comparison['input_source_collections']['before']) == meta['previous_iteration']['source_collection_sha256']
+    assert comparison['camera'] == meta['camera']
+    assert comparison['input_sizes'] == {'before': [7168, 3072], 'current': [7168, 3072]}
+    assert comparison['samples'] == meta['samples'] == 16
+    assert len(comparison['artifacts']) == 1
+    for record in comparison['artifacts']:
+        path = ROOT / record['path']
+        assert sha(path) == record['sha256'] and path.stat().st_size == record['bytes']
+    assert not {r['path'] for r in qa['captures']}.intersection(r['path'] for r in comparison['artifacts'])
+    artifact_count = len(qa['captures']) + len(comparison['artifacts'])
+    artifact_bytes = sum(row['bytes'] for row in [*qa['captures'], *comparison['artifacts']])
+    evidence_budget = qa['budget']
+    assert artifact_count == evidence_budget['actual_artifact_count'] == 14
+    assert evidence_budget['capture_limit'] == 14
+    assert artifact_bytes == evidence_budget['actual_artifact_bytes'] < evidence_budget['capture_bytes_limit'] == 12*1024**2
+    amplification = round(artifact_bytes / sum((ROOT / name).stat().st_size for name in evidence_budget['source_basis']), 2)
+    assert amplification == evidence_budget['source_amplification_actual'] < evidence_budget['source_amplification_limit'] == 256
 
 
 def main():
@@ -29,7 +80,8 @@ def main():
     assert len(meta['render_tiles']) == 8 and meta['samples'] == 16
     for path, fingerprint in meta['sources'].items():
         assert sha(ROOT / path) == fingerprint, path
-    assert len(meta['sources']) == 31
+    assert len(meta['sources']) == 32 and 'scripts/paving_cleanup.py' in meta['sources']
+    validate_paving_regularization(meta)
     assert sha(ROOT / 'scripts/campus_expansion_export.py') == meta['exporter_sha256']
     assert sha(ROOT / 'scripts/promote_full_atlas.py') == meta['promotion']['script_sha256']
     manifest_path = ROOT / 'model/campus/manifest.json'
@@ -57,9 +109,7 @@ def main():
     assert detail['courtyards']['actual_overlay_outside_source_m2'] < 1e-7
     assert detail['courtyards']['actual_overlay_exclusion_intersection_m2'] < 1e-7
     proof = meta['landscape_construction_consistency']
-    assert proof['status'] == 'passed' and proof['constructions'] == ['extension_diagnostic', 'native_full']
-    assert proof['source_collection_sha256'] == hashlib.sha256(json.dumps(meta['sources'], sort_keys=True, separators=(',', ':')).encode()).hexdigest()
-    assert proof['core_sha256']['extension_diagnostic'] == proof['core_sha256']['native_full']
+    validate_construction_proof(meta, proof, 'landscape_detail')
     site = meta['checks']['site_finish']
     validate_site_sources(meta)
     assert site == meta['site_finish_revision']['checks']
@@ -88,9 +138,12 @@ def main():
         assert row['outside_source_region_m2_at_float32_tolerance'] < 1e-7
         assert row['outside_support_m2_at_float32_tolerance'] < 1e-7
     site_proof = meta['site_construction_consistency']
-    assert site_proof['status'] == 'passed' and site_proof['constructions'] == ['extension_diagnostic', 'native_full']
-    assert site_proof['source_collection_sha256'] == proof['source_collection_sha256']
-    assert site_proof['core_sha256']['extension_diagnostic'] == site_proof['core_sha256']['native_full']
+    validate_construction_proof(meta, site_proof, 'site_finish')
+    validate_construction_proof(meta, meta['paving_construction_consistency'], 'paving_regularization')
+    seal = meta['iteration_seal']
+    assert seal['status'] == 'passed' and seal['script'] == 'scripts/seal_landscape_atlas.py'
+    assert sha(ROOT / seal['script']) == seal['script_sha256']
+    assert meta['previous_iteration']['metadata_reference']['git_commit'] == 'b92632471488d95a43872fe5c2d3c45775ea6561'
     assert meta['target_reference_revision']['primary_url'] == 'https://gis.whut.edu.cn/index.shtml'
     assert meta['target_reference_revision']['status'] == 'website_alignment_not_met'
     assert meta['visual_review']['reference_alignment_status'] == 'not_met'
@@ -109,42 +162,7 @@ def main():
         expected = [meta['width']/2 + px*meta['width']/meta['camera']['ortho_scale'], meta['height']/2 - py*meta['width']/meta['camera']['ortho_scale']]
         assert max(abs(v-a) for v, a in zip(expected, record['anchor'])) < .02, record['id']
     qa = json.loads((ROOT / meta['frontend_validation']['evidence_manifest']).read_text())
-    assert qa['status'] == 'passed' and not qa['errors'] and len(qa['captures']) == 13
-    assert qa['image_sha256'] == meta['image_sha256']
-    for name in ('frontend_validation', 'website_frontend_validation'):
-        parent = meta[name]
-        assert parent['status'] == 'passed' and parent['image_sha256'] == meta['image_sha256']
-        assert parent['alignment_status'] == 'not_met' and parent['captures'] == len(qa['captures'])
-        assert parent['source_sha256'] == qa['source_sha256']
-        assert parent['evidence_manifest'] == meta['frontend_validation']['evidence_manifest']
-    assert hashlib.sha256(qa['script_source'].encode()).hexdigest() == qa['script_sha256']
-    for path, fingerprint in qa['source_sha256'].items():
-        assert sha(ROOT / path) == fingerprint, path
-    for record in qa['captures']:
-        path = ROOT / record['path']
-        assert sha(path) == record['sha256'] and path.stat().st_size == record['bytes']
-        assert record['image_sha256'] == record['formal_image_sha256'] == meta['image_sha256']
-        assert record['roof_hotspots'] == 130 and record['source_points'] == 7 and not record['overflow']
-    comparison = qa['native_comparison']
-    assert comparison['input_image_sha256'] == {
-        'before': meta['previous_iteration']['image_sha256'], 'current': meta['image_sha256']}
-    assert comparison['input_source_collections']['current'] == meta['sources']
-    assert comparison['input_source_collections']['before'] == meta['historical_native_proofs']['sources']
-    assert comparison['camera'] == meta['camera']
-    assert comparison['input_sizes'] == {'before': [7168, 3072], 'current': [7168, 3072]}
-    assert comparison['samples'] == meta['samples'] == 16
-    assert len(comparison['artifacts']) == 1
-    for record in comparison['artifacts']:
-        path = ROOT / record['path']
-        assert sha(path) == record['sha256'] and path.stat().st_size == record['bytes']
-    artifact_count = len(qa['captures']) + len(comparison['artifacts'])
-    artifact_bytes = sum(row['bytes'] for row in [*qa['captures'], *comparison['artifacts']])
-    evidence_budget = qa['budget']
-    assert artifact_count == evidence_budget['actual_artifact_count'] == 14
-    assert evidence_budget['capture_limit'] == 14
-    assert artifact_bytes == evidence_budget['actual_artifact_bytes'] < evidence_budget['capture_bytes_limit'] == 12*1024**2
-    amplification = round(artifact_bytes / sum((ROOT / name).stat().st_size for name in evidence_budget['source_basis']), 2)
-    assert amplification == evidence_budget['source_amplification_actual'] < evidence_budget['source_amplification_limit'] == 256
+    validate_evidence(meta, qa)
     for record in meta['artifact_manifest']:
         path = ROOT / record['path']
         assert sha(path) == record['sha256'] and path.stat().st_size == record['bytes']
@@ -159,7 +177,7 @@ def main():
         size = sum(p.stat().st_size for p in files)
         assert size < 192*1024**2
         sizes[str(directory)] = {'files': len(files), 'bytes': size}
-    print(json.dumps({'status': 'passed', 'sources': 31, 'original_campus_assets': 23,
+    print(json.dumps({'status': 'passed', 'sources': len(meta['sources']), 'original_campus_assets': 23,
         'captures': 13, 'image_sha256': meta['image_sha256'], 'asset_bytes': total,
         'directories': sizes}, ensure_ascii=False, indent=2))
 

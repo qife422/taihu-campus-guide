@@ -112,6 +112,7 @@ def build_atlas(north_bytes: bytes | None = None, candidate: dict[str, bytes] | 
         'scripts/facade_depth.py', 'scripts/landscape_beds.py', 'scripts/courtyard_finish.py',
         'scripts/landscape_surface.py', 'scripts/campus_expansion_export.py',
         'scripts/facade_finish.py', 'scripts/hardscape_transition.py', 'scripts/planting_finish.py',
+        'scripts/paving_cleanup.py',
         'src/CampusAtlas.jsx', 'src/campusAtlas.css',
     ]
     source_bytes = sum((ROOT / name).stat().st_size for name in source_paths)

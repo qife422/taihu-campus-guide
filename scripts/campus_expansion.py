@@ -108,6 +108,24 @@ assert paving_cleanup['outside_original_paving_m2']<.01
 # The satellite-traced garden finish below replaces only this bounded area.
 garden_roi=Polygon([tuple(gp(p))[:2] for p in [(248,1375),(535,1375),(535,1662),(248,1662)]])
 paving=paving.difference(garden_roi)
+# Round only derived middle-campus paving, before its grass/paving/course
+# meshes exist. Retain source-traced finishes and existing contact regions.
+from paving_cleanup import regularize_paving
+bpy.context.view_layer.update()
+paving_source_trees=[]
+for ob in s.objects:
+    if ob.type!='MESH' or ob.hide_render or not ob.name.startswith('Joined source context tree '):continue
+    p=ob.matrix_world.translation;point=Point(p.x,p.y)
+    if sports.covers(point) or roofs.covers(point):continue
+    paving_source_trees.append((p.x,p.y))
+paving_traced_finishes=unary_union(
+    [shape(row) for key in ('paving_polygons','lawn_polygons') for row in D['landscape'][key]]+
+    [LineString([tuple(gp(p,source=row.get('source','satellite')))[:2] for p in row['points']])
+     .buffer(row['width_m']/2,join_style='round',cap_style='round') for row in D['landscape']['footpaths']])
+paving,paving_regularization_checks=regularize_paving(
+    paving,buildings={row['id']:shape(row) for row in D['buildings']},roofs=roofs,
+    outside=outside,roads=asphalt.union(ctx['road']),traced_finishes=paving_traced_finishes,
+    tree_centres=paving_source_trees)
 # Satellite-guided grass pigment restores the visible dry/green variation of
 # this campus without using the image as a substitute for 3-D roofs or paths.
 # The northern extension has a separate fixed photograph and coordinate frame.
@@ -1949,6 +1967,9 @@ for key in ('facade_finish','hardscape_transition','planting_finish'):
 print('NATIVE CHECK: facade component finish',flush=True)
 site_facade=site_modules['facade_finish']['add_facade_finish'](globals())
 print('NATIVE CHECK: facade finish passed',site_facade['window_assembly_count'],flush=True)
+from paving_cleanup import add_paving_edge_finish
+paving_edge_finish_checks=add_paving_edge_finish(globals())
+print('NATIVE CHECK: middle paving edge finish passed',paving_edge_finish_checks['affected_course_area_m2_estimate'],flush=True)
 site_hardscape=site_modules['hardscape_transition']['add_hardscape_transition'](globals())
 print('NATIVE CHECK: outer hardscape passed',site_hardscape['used_target_count'],flush=True)
 site_planting=site_modules['planting_finish']['add_planting_finish'](globals())
@@ -1993,7 +2014,7 @@ for row in regions:
     if row['id']=='north':row['focus_bounds']=frame
     region_focus_records[row['id']]={'source':source,'pixel_frame':pixels,'height_envelope_m_estimate':[0,28],
         'projected_frame':frame,'full_record_count':row['count'],'scope':'Initial view only, entire regional list and source geometry retained'}
-checks={'road_roof_intersection_m2':asphalt.intersection(roofs).area,'paving_roof_intersection_m2':paving.intersection(roofs).area,'paving_water_intersection_m2':paving.intersection(water).area,'paving_artifact_cleanup':paving_cleanup,'paired_tree_count':len(pairs),'restored_sports_objects':sport_names,'excluded_context_crowns':excluded,'record_count':len(records),'north_detail':north_detail_checks,'garden_detail':garden_detail_checks,'central_parking_detail':central_parking_checks,'road_mark_detail':road_mark_checks,'b08_roof_detail':b08_roof_checks}
+checks={'paving_regularization':paving_regularization_checks,'road_roof_intersection_m2':asphalt.intersection(roofs).area,'paving_roof_intersection_m2':paving.intersection(roofs).area,'paving_water_intersection_m2':paving.intersection(water).area,'paving_artifact_cleanup':paving_cleanup,'paired_tree_count':len(pairs),'restored_sports_objects':sport_names,'excluded_context_crowns':excluded,'record_count':len(records),'north_detail':north_detail_checks,'garden_detail':garden_detail_checks,'central_parking_detail':central_parking_checks,'road_mark_detail':road_mark_checks,'b08_roof_detail':b08_roof_checks}
 checks['track_finish_repairs']=track_repairs
 checks['material_pass_roof_faces_preserved']=roof_faces_preserved
 checks['surface_finish']=surface_finish_checks
@@ -2006,6 +2027,7 @@ checks['canopy_relief']=canopy_relief_checks
 checks['canopy_forms']=canopy_form_checks
 checks['fine_ground_and_roof_finish']=fine_surface_checks
 checks['architectural_edge_finish']={'material_count':len(architectural_edge_materials),'radius_m_estimate':.035,'samples':2,'mesh_positions_changed':False}
+checks['paving_edge_finish']=paving_edge_finish_checks
 checks['central_roof_finish']=central_roof_checks
 checks['stone_edge_contact']=stone_contact_checks
 checks['lake_surface']=lake_surface_checks
@@ -2015,7 +2037,7 @@ checks['facade_contrast']=facade_checks
 assert all(v<1e-7 for k,v in checks.items() if k.endswith('_m2'))
 checks['landscape_detail']=landscape_checks
 checks['site_finish']=site_checks
-sources={**ctx['sources'],**{p:sha(ROOT/p) for p in ['scripts/campus_expansion.py','scripts/north_pilot_detail.py','scripts/garden_detail.py','scripts/canopy_volume.py','scripts/ground_contact.py','scripts/facade_depth.py','scripts/landscape_beds.py','scripts/courtyard_finish.py','scripts/landscape_surface.py','scripts/facade_finish.py','scripts/hardscape_transition.py','scripts/planting_finish.py','output/garden-tree-canopy.png','model/campus/references/north-extension.jpg','model/campus/references/north-extension.json']}}
+sources={**ctx['sources'],**{p:sha(ROOT/p) for p in ['scripts/campus_expansion.py','scripts/paving_cleanup.py','scripts/north_pilot_detail.py','scripts/garden_detail.py','scripts/canopy_volume.py','scripts/ground_contact.py','scripts/facade_depth.py','scripts/landscape_beds.py','scripts/courtyard_finish.py','scripts/landscape_surface.py','scripts/facade_finish.py','scripts/hardscape_transition.py','scripts/planting_finish.py','output/garden-tree-canopy.png','model/campus/references/north-extension.jpg','model/campus/references/north-extension.json']}}
 assert all(sources[path]==value for path,value in craft_module_sha.items())
 meta={'title':'太湖校园地图','coverage':'campus','width':W,'height':H,'records':records,'regions':regions,'camera':{'position':list(cam.location),'rotation_euler':list(cam.rotation_euler),'ortho_scale':cam.data.ortho_scale},'roof_faces_world':faces,'sources':sources,'checks':checks,'samples':s.cycles.samples,'method':'Native orthographic Blender render of retained roof/road geometry and source tree centres; source-bounded derived architecture/landscape finishes and opaque frame apertures integrated in one scene','limitations':'Heights and unseen facades remain estimated. No surveyed routing network. Names outside B06 remain descriptive.','render_status':'generated_needs_visual_review','generation_commands':['Blender --background -t 4 --python scripts/campus_expansion.py -- --final'],'landscape_revision':{'tree_pairs':pairs,'ground_source':'Fixed roads.json union layers and layout.json; satellite-visible garden island, forecourt, planted row and small pond bounded to their source image','source_ground_details':source_details},'ground_revision':ctx['ground_revision']}
 meta['landscape_detail_revision']={'basis':'Retained four geographic lawn materials, four source planting caps and three existing source-traced courtyard finishes',
